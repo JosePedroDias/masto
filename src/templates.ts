@@ -1,5 +1,5 @@
 import { i18n } from "./i18n";
-import { deltaT, humanDate, withoutHtml } from "./tools";
+import { deltaT, humanDate, isTextInPt, withoutHtml } from "./tools";
 
 export function accountTerm(_acc: Entity.Account | Entity.Mention) {
     if ('avatar_static' in _acc) {
@@ -70,10 +70,13 @@ ${i('content')}:\n${withoutHtml(content).trim()}${mentions2 ? `\n${i('mentions')
 export function tootHTML(status: Entity.Status) {
     const core = status.reblog || status;
     const acc = core.account;
-    const lang = core.language || status.language || '';
-    const i = (k:string) => i18n(k, lang);
-
     const content = core.content;
+    
+    const lang = isTextInPt(withoutHtml(content, true)) ? 'pt' : 'en';
+    //const lang = core.language || status.language || '';
+
+    const i = (k:string) => i18n(k, lang);
+    
     const mentions = core.mentions;
     const media = core.media_attachments;
 
@@ -100,10 +103,12 @@ export function tootHTML(status: Entity.Status) {
 export function tootReader(status: Entity.Status) {
     const core = status.reblog || status;
     const acc = core.account;
-    const lang = core.language || status.language || '';
-    const i = (k:string) => i18n(k, lang);
-
     const content = core.content;
+
+    const lang = isTextInPt(withoutHtml(content, true)) ? 'pt' : 'en';
+    //const lang = core.language || status.language || '';
+
+    const i = (k:string) => i18n(k, lang);
 
     return `${accountReader(acc)} ${i('said')} ${deltaT(core.created_at, lang)} ${i('ago')}:
 ${withoutHtml(content, true).trim()}

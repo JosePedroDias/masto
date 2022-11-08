@@ -24,7 +24,10 @@ npm run run
 ```
 
 
-https://mastodon.social/settings/applications
-testing_megalodon
-http://localhost:8080
+## TODO
 
+- rewrite isTextInPt
+- read image descriptions
+- all links as As on tootHTML
+- space bar to skip reading a toot
+- allow detecting en/pt OR overriding toot language

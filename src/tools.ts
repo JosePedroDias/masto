@@ -34,7 +34,7 @@ export function removeURLs(s:string) {
 }
 
 export function removeHashes(s:string) {
-  return s.replace(/#[\n\S]+/g, '');
+  return s.replace(/#([\n\S]+)/g, '$2');
 }
 
 export function removeUsers(s:string) {
@@ -57,4 +57,67 @@ export function withoutHtml(s:string, noURLs=false) {
   }
 
   return s2;
+}
+
+export function isTextInPt(s:string) {
+  s = s.replace(/,!\?\.:-;/g, '');
+  const words = s.toLowerCase().split(/\s+/);
+  console.log(words);
+  const found: { [key:string] : boolean } = {};
+  for (let w of words) {
+    found[w] = true;
+  }
+  let count = 0;
+
+  found['à'] && ++count;
+  found['aqui'] && ++count;
+  found['boa'] && ++count;
+  found['bom'] && ++count;
+  found['com'] && ++count;
+  found['como'] && ++count;
+  found['da'] && ++count;
+  found['das'] && ++count;
+  found['de'] && ++count;
+  found['do'] && ++count;
+  found['dos'] && ++count;
+  found['e'] && ++count;
+  found['é'] && ++count;
+  found['és'] && ++count;
+  found['eu'] && ++count;
+  found['há'] && ++count;
+  found['houve'] && ++count;
+  found['hoje'] && ++count;
+  found['lá'] && ++count;
+  found['muito'] && ++count;
+  found['não'] && ++count;
+  found['na'] && ++count;
+  found['no'] && ++count;
+  found['o'] && ++count;
+  found['os'] && ++count;
+  found['ou'] && ++count;
+  found['pela'] && ++count;
+  found['pelas'] && ++count;
+  found['por'] && ++count;
+  found['porquê'] && ++count;
+  found['que'] && ++count;
+  found['quê'] && ++count;
+  found['são'] && ++count;
+  found['se'] && ++count;
+  found['sei'] && ++count;
+  found['sem'] && ++count;
+  found['sim'] && ++count;
+  found['só'] && ++count;
+  found['também'] && ++count;
+  found['tem'] && ++count;
+  found['tenho'] && ++count;
+  found['tens'] && ++count;
+  found['tu'] && ++count;
+  found['um'] && ++count;
+  found['uma'] && ++count;
+  found['vi'] && ++count;
+  found['vou'] && ++count;
+
+  console.log(count);
+
+  return count >= 2;
 }

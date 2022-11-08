@@ -19,6 +19,10 @@
                 background: #CCC;
             }
 
+            .toot.reading {
+                border: 2px solid red;
+            }
+
             .toot .content {
                 font-size: 23px;
                 line-height: 40px;
@@ -42,29 +46,44 @@
         _BODY_
 
         <script>
-            function speak(text, lang="en") {
-                const utter = new SpeechSynthesisUtterance(text);
-                console.log(text, lang);
-                utter.lang = lang;
-                window.speechSynthesis.speak(utter);
+            function readAll() {
+                const toots = Array.from(document.body.querySelectorAll('.toot'));
+                const chunks = Array.from(document.body.querySelectorAll('.read-text'))
+                .map((el, idx) => [el.innerHTML, el.getAttribute('lang'), idx]);
 
-                return new Promise((resolve) => {
-                    const timer = setInterval( () => {
-                        if (!window.speechSynthesis.speaking) {
-                            clearInterval(timer);
-                            resolve();
-                        }
-                    }, 100);
-                });
+                function highlight(index) {
+                    toots.forEach((toot, i) => {
+                        toot.classList.toggle('reading', i === index);
+                    });
+                }
+
+                function read(text, lang="en", idx) {
+                    const utter = new SpeechSynthesisUtterance(text);
+                    console.log(text, lang, idx);
+                    highlight(idx);
+                    utter.lang = lang;
+                    window.speechSynthesis.speak(utter);
+
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            const timer = setInterval( () => {
+                                if (!window.speechSynthesis.speaking) {
+                                    clearInterval(timer);
+                                    resolve();
+                                }
+                            }, 100);
+                        }, 100);
+                    });
+                }
+
+                chunks.reduce(
+                    (p, [text, lang, idx]) => p.then(() => read(text, lang, idx)),
+                    Promise.resolve()
+                );
             }
-
-            const chunks = Array.from(document.body.querySelectorAll('.read-text'))
-            .map(el => [el.innerHTML, el.getAttribute('lang')]);
             
-            chunks.reduce(
-                (p, [text, lang]) => p.then(() => speak(text, lang)),
-                Promise.resolve()
-            );
+            readAll();
+            window.readAll = readAll;
         </script>
     </body>
 </html>
