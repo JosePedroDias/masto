@@ -3,8 +3,10 @@ import { readFile, writeFile } from 'node:fs/promises';
 const PERSISTENCE = 'persistence.json';
 
 export type Persistence =  {
-  first?: string;
-  last?: string;
+  limit?: number;
+  max_id?: string;
+  min_id?: string;
+  since_id?: string;
 }
 
 export async function load():Promise<Persistence> {
