@@ -10,6 +10,7 @@ const lookup:{ [key:string] : {[key:string]: string } } = {
         media: 'media',
         mentions: 'menções',
         min: 'min',
+        now: 'agora',
         said: 'disse',
     },
 };

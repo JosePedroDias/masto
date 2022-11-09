@@ -1,5 +1,5 @@
 import { i18n } from "./i18n";
-import { deltaT, humanDate, isTextInPt, withoutHtml } from "./tools";
+import { deltaT, humanDate, isTextInPt, removeEmojis, withoutHtml } from "./tools";
 
 export function accountTerm(_acc: Entity.Account | Entity.Mention) {
     if ('avatar_static' in _acc) {
@@ -24,7 +24,7 @@ export function accountHTML(_acc: Entity.Account | Entity.Mention) {
 
 export function accountReader(_acc: Entity.Account | Entity.Mention) {
     if ('avatar_static' in _acc) {
-        return _acc.display_name;
+        return removeEmojis(_acc.display_name);
     }
     return _acc.username;
 }
@@ -91,7 +91,7 @@ export function tootHTML(status: Entity.Status) {
     ${i('URL')}: <a href="${core.url}" target="_blank">${core.url}</a>
     <br/>
     <br/>
-    <div class="content">${withoutHtml(content).trim()}</div>
+    <div class="content">${withoutHtml(content, 'anchor').trim()}</div>
     <br/>
     ${mentions.length ? `\n ${i('mentions')}:\n <div class"mentions">${mentions2}</div>` : ''}
     <br/>

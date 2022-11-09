@@ -6,6 +6,10 @@
         <title>mastodon</title>
 
         <style>
+            html {
+                scroll-behavior: smooth;
+            }
+
             body {
                 font-family: sans-serif;
             }
@@ -55,6 +59,7 @@
                     toots.forEach((toot, i) => {
                         toot.classList.toggle('reading', i === index);
                     });
+                    toots[index].scrollIntoView();
                 }
 
                 function read(text, lang="en", idx) {
@@ -65,11 +70,26 @@
                     window.speechSynthesis.speak(utter);
 
                     return new Promise((resolve) => {
+                        function onKeyDown(ev) {
+                            if (ev.code !== 'Space') return;
+                            ev.preventDefault();
+                            ev.stopPropagation();
+                            onDone();
+                        };
+                        document.addEventListener('keydown', onKeyDown);
+
+                        let timer;
+                        function onDone() {
+                            document.removeEventListener('keydown', onKeyDown);
+                            clearInterval(timer);
+                            window.speechSynthesis.cancel();
+                            resolve();
+                        }
+
                         setTimeout(() => {
-                            const timer = setInterval( () => {
+                            timer = setInterval( () => {
                                 if (!window.speechSynthesis.speaking) {
-                                    clearInterval(timer);
-                                    resolve();
+                                    onDone();
                                 }
                             }, 100);
                         }, 100);

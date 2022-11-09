@@ -26,8 +26,5 @@ npm run run
 
 ## TODO
 
-- rewrite isTextInPt
+- numbers not being read??
 - read image descriptions
-- all links as As on tootHTML
-- space bar to skip reading a toot
-- allow detecting en/pt OR overriding toot language
