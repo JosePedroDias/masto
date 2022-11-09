@@ -75,7 +75,7 @@ export function withoutHtml(s:string, noURLs:boolean|string=false) {
 
 export function isTextInPt(s:string) {
   s = s.replace(/[,!\?\.:-;\(\)'"]/g, ' ');
-  const words = s.toLowerCase().split(/\s+/);
+  const words = Array.from(new Set(s.toLowerCase().split(/\s+/))).filter((w) => !!w);
   //console.log(words);
   const foundWords = words.filter((w) => ptWords.includes(w));
   let count = foundWords.length;

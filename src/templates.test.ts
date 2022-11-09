@@ -43,12 +43,25 @@ const mention:Entity.Mention = {
 
 const attachmentImage:Entity.Attachment = {
     id: 'id',
-    type: 'unknown',
+    type: 'image',
     url: 'https://attachment.com/image.jpg',
     remote_url: null,
-    preview_url: '',
+    preview_url: 'https://attachment.com/preview.jpg',
     text_url: null,
-    meta: null,
+    meta: {
+        "original": {
+          "width": 579,
+          "height": 579,
+          "size": "579x579",
+          "aspect": 1
+        },
+        "small": {
+          "width": 480,
+          "height": 480,
+          "size": "480x480",
+          "aspect": 1
+        }
+    },
     description: 'description'
 };
 
@@ -57,9 +70,23 @@ const attachmentVideo:Entity.Attachment = {
     type: 'unknown',
     url: 'https://attachment.com/video.mp4',
     remote_url: null,
-    preview_url: '',
+    preview_url: 'https://attachment.com/poster.png',
     text_url: null,
-    meta: null,
+    meta: {
+        "original": {
+          "width": 1080,
+          "height": 1080,
+          "frame_rate": "30/1",
+          "duration": 14.634,
+          "bitrate": 937010
+        },
+        "small": {
+          "width": 400,
+          "height": 400,
+          "size": "400x400",
+          "aspect": 1
+        }
+      },
     description: 'description'
 };
 
@@ -69,6 +96,17 @@ const attachmentAudio:Entity.Attachment = {
     url: 'https://attachment.com/audio.mp3',
     remote_url: null,
     preview_url: '',
+    text_url: null,
+    meta: null,
+    description: 'description'
+};
+
+const attachmentUnknown:Entity.Attachment = {
+    id: 'id',
+    type: 'image',
+    url: 'https://attachment.com/image.tiff',
+    remote_url: null,
+    preview_url: 'https://attachment.com/preview.tiff',
     text_url: null,
     meta: null,
     description: 'description'
@@ -169,8 +207,16 @@ display_name (acct)
 });
 
 test('tootReader', (_t) => {
-    assert.equal(tootReader(toot1), `display_name said now ago:\nhello world  hash yay.`);
-    assert.equal(tootReader(toot2), `display_name said now ago:\nhello world  hash yay.`);
+    assert.equal(tootReader(toot1), `display_name said now ago:
+hello world  hash yay.
+description
+description
+description`);
+    assert.equal(tootReader(toot2), `display_name said now ago:
+hello world  hash yay.
+description
+description
+description`);
 });
 
 test('tootTerm', (_t) => {
@@ -215,12 +261,15 @@ mentions:
 <div class"mentions"><a href="https://url.com" target="_blank">acct</a></div><br/>
 
 media:
-<div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" src="https://attachment.com/image.jpg"></a>
-<video controls src="https://attachment.com/video.mp4"></video>
+<div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>
+<video controls poster="https://attachment.com/poster.png" src="https://attachment.com/video.mp4"></video>
 <audio controls src="https://attachment.com/audio.mp3"></audio></div>
 
 <div class="read-text" lang="en">display_name said now ago:
-hello world  hash yay.</div>
+hello world  hash yay.
+description
+description
+description</div>
 </div>`);
 assert.equal(tootHTML(toot2).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
 boost by <a href="https://url.com" target="_blank">
@@ -238,18 +287,21 @@ mentions:
 <div class"mentions"><a href="https://url.com" target="_blank">acct</a></div><br/>
 
 media:
-<div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" src="https://attachment.com/image.jpg"></a>
-<video controls src="https://attachment.com/video.mp4"></video>
+<div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>
+<video controls poster="https://attachment.com/poster.png" src="https://attachment.com/video.mp4"></video>
 <audio controls src="https://attachment.com/audio.mp3"></audio></div>
 
 <div class="read-text" lang="en">display_name said now ago:
-hello world  hash yay.</div>
+hello world  hash yay.
+description
+description
+description</div>
 </div>`);
 });
 
 test('mediaHTML', (_t) => {
-    assert.equal(mediaHTML(attachmentImage.url), `<a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" src="https://attachment.com/image.jpg"></a>`);
-    assert.equal(mediaHTML(attachmentVideo.url), `<video controls src="https://attachment.com/video.mp4"></video>`);
-    assert.equal(mediaHTML(attachmentAudio.url), `<audio controls src="https://attachment.com/audio.mp3"></audio>`);
-    assert.equal(mediaHTML('unknown.tiff'), `UNSUPPORTED? unknown.tiff`);
+    assert.equal(mediaHTML(attachmentImage), `<a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>`);
+    assert.equal(mediaHTML(attachmentVideo), `<video controls poster="https://attachment.com/poster.png" src="https://attachment.com/video.mp4"></video>`);
+    assert.equal(mediaHTML(attachmentAudio), `<audio controls src="https://attachment.com/audio.mp3"></audio>`);
+    assert.equal(mediaHTML(attachmentUnknown), `UNSUPPORTED? https://attachment.com/image.tiff`);
 });

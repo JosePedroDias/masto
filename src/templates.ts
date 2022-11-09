@@ -33,16 +33,17 @@ const VIDEO_EXT = ['mp4'];
 const AUDIO_EXT = ['mp3'];
 const IMAGE_EXT = ['png', 'jpg', 'jpeg'];
 
-export function mediaHTML(url: string) {
+export function mediaHTML(m:Entity.Attachment) {
+    const url = m.url;
     const ext = url.split('.').pop() as string;
     if (VIDEO_EXT.includes(ext)) {
-        return `<video controls src="${url}"></video>`;
+        return `<video controls poster="${m.preview_url}" src="${url}"></video>`;
     }
     if (AUDIO_EXT.includes(ext)) {
         return `<audio controls src="${url}"></audio>`;
     }
     if (IMAGE_EXT.includes(ext)) {
-        return `<a href="${url}" target="_blank"><img class="media-image" src="${url}"></a>`;
+        return `<a href="${url}" target="_blank"><img class="media-image" alt="${m.description}" src="${m.preview_url || url}"></a>`;
     }
     return `UNSUPPORTED? ${url}`;
 }
@@ -80,7 +81,7 @@ export function tootHTML(status: Entity.Status) {
     const media = core.media_attachments;
 
     const mentions2 = mentions.map(m => accountHTML(m)).join(', ');
-    const media2 = media.map(m => mediaHTML(m.url)).join('\n');
+    const media2 = media.map(m => mediaHTML(m)).join('\n');
 
     return `<div class="toot">
 ${status.reblog ? `${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})` : ''}<br/>
@@ -103,6 +104,9 @@ export function tootReader(status: Entity.Status) {
 
     const i = (k:string) => i18n(k, lang);
 
+    const media = core.media_attachments;
+    const mediaS = media.map(m => withoutHtml(m.description || "", true).trim()).join('\n');
+
     return `${accountReader(acc)} ${i('said')} ${deltaT(core.created_at, lang)} ${i('ago')}:
-${withoutHtml(content, true).trim()}`;
+${withoutHtml(content, true).trim()}${mediaS ? '\n' + mediaS :''}`;
 }
