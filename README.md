@@ -23,6 +23,10 @@ npm run build
 npm run run
 ```
 
+## REFERENCE
+
+- https://nodejs.org/docs/latest-v18.x/api/test.html#test_running_tests_from_the_command_line
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 
 ## TODO
 

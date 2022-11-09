@@ -1,12 +1,16 @@
 {
   "name": "masto",
   "version": "1.0.0",
-  "description": "",
+  "description": "simple mastodon home client with terminal, web and TTS features",
   "main": "dist/main.js",
   "type": "module",
+  "engines": {
+    "node": ">= 18"
+  },
   "scripts": {
     "build": "rm -rf dist/* && tsc",
-    "run": "node --experimental-specifier-resolution=node dist/main.js"
+    "run": "node --experimental-specifier-resolution=node dist/main.js",
+    "test": "node --experimental-specifier-resolution=node --test"
   },
   "author": "",
   "license": "ISC",

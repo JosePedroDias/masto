@@ -1,4 +1,5 @@
 import { i18n } from './i18n';
+import { ptWords } from './ptWords';
 
 const MIN = 60;
 const HOUR = 60 * MIN;
@@ -10,12 +11,12 @@ export function plural(word:string, quantity:number) {
 
 export function humanDate(dateS:string) {
   const d = new Date(dateS);
-  return d.toISOString().substring(0, 16);
+  return d.toISOString().substring(0, 16).replace('T', ' ');
 }
 
-export function deltaT(dateS:string, lang:string) {
+export function deltaT(dateS:string, lang:string, now:number=Date.now()) {
   const d = new Date(dateS);
-  let dSecs = (Date.now() - d.valueOf()) / 1000;
+  let dSecs = (now - d.valueOf()) / 1000;
   const days = Math.floor(dSecs / DAY); dSecs -= days * DAY;
   const hours = Math.floor(dSecs / HOUR); dSecs -= hours * HOUR;
   const mins = Math.floor(dSecs / MIN); dSecs -= mins * MIN;
@@ -45,6 +46,7 @@ export function removeUsers(s:string) {
   return s.replace(/@[\n\S]+/g, '');
 }
 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes
 export function removeEmojis(s:string) {
   return s.replaceAll(/\p{Emoji}/ug, '');
 }
@@ -71,99 +73,13 @@ export function withoutHtml(s:string, noURLs:boolean|string=false) {
   return s2;
 }
 
-const ptWords = [
-  'à',
-  'agora',
-  'aquela',
-  'aquelas',
-  'aquele',
-  'aqueles',
-  'aquilo',
-  'ainda',
-  'aqui',
-  'boa',
-  'bom',
-  'com',
-  'como',
-  'da',
-  'das',
-  'de',
-  //'do',
-  'dos',
-  'e',
-  'é',
-  'ele',
-  'ela',
-  'em',
-  'és',
-  'essa',
-  'essas',
-  'esse',
-  'esses',
-  'esta',
-  'está',
-  'estas',
-  'estás',
-  'estão',
-  'este',
-  'estes',
-  'eu',
-  'há',
-  'houve',
-  'hoje',
-  'lá',
-  'mas',
-  'meu',
-  'meus',
-  'minha',
-  'minhas',
-  'muita',
-  'muito',
-  'não',
-  'na',
-  //'no',
-  'o',
-  'obrigada',
-  'obrigado',
-  'os',
-  'ou',
-  'pela',
-  'pelas',
-  'por',
-  'porquê',
-  'que',
-  'quê',
-  'são',
-  'se',
-  'sei',
-  'seu',
-  'seus',
-  'sem',
-  'sim',
-  'só',
-  'somos',
-  'sou',
-  'sua',
-  'suas',
-  'também',
-  'tem',
-  'temos',
-  'tenho',
-  'tens',
-  'tu',
-  'um',
-  'uma',
-  'vi',
-  'vou',
-];
-
 export function isTextInPt(s:string) {
   s = s.replace(/[,!\?\.:-;\(\)'"]/g, ' ');
   const words = s.toLowerCase().split(/\s+/);
-  console.log(words);
+  //console.log(words);
   const foundWords = words.filter((w) => ptWords.includes(w));
   let count = foundWords.length;
-  console.log(foundWords);
-  console.log(count);
+  //console.log(foundWords);
+  //console.log(count);
   return count >= 2;
 }
