@@ -33,7 +33,7 @@ const VIDEO_EXT = ['mp4'];
 const AUDIO_EXT = ['mp3'];
 const IMAGE_EXT = ['png', 'jpg', 'jpeg'];
 
-function mediaHTML(url: string) {
+export function mediaHTML(url: string) {
     const ext = url.split('.').pop() as string;
     if (VIDEO_EXT.includes(ext)) {
         return `<video controls src="${url}"></video>`;
