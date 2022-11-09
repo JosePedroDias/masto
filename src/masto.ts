@@ -2,7 +2,8 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 import generator, { Entity, Mastodon } from 'megalodon';
-import { Persistence, save } from './persistence';
+import { Persistence, save as savePersistence } from './persistence';
+import { isInCache, memorize, save as saveCache } from './cache';
 
 // @ts-ignore
 const client: Mastodon = generator.default(
@@ -17,7 +18,16 @@ export async function getHomeTimeline(per:Persistence): Promise<Array<Entity.Sta
         min_id: per.min_id,
         max_id: per.max_id, // going to the past
         since_id: per.since_id // going to the future
-    })).data; // max_id min_id since_id
+    }))
+    .data.filter((status:Entity.Status) => { // filter out statuses we've already visited (to avoid seeing multiple or any boost repetitions)
+        const core = status.reblog || status;
+        const wasInCache = isInCache(core.url);
+        if (!wasInCache) memorize(core.url);
+        else console.log(`filtering out previously read toot: ${core.url}`);
+        return !wasInCache;
+    });
+
+    await saveCache();
 
     const _toots = [...toots];
 
@@ -29,7 +39,7 @@ export async function getHomeTimeline(per:Persistence): Promise<Array<Entity.Sta
     //if (_first) { per.max_id = _first; per.min_id = undefined; } // READING NOW TO PAST WORKS!
     if (_first) { per.min_id = _first; per.max_id = undefined; } // READING NEWEST SINCE LAST READ
     // min_id max_id=109308584187095749
-    await save(per);
+    await savePersistence(per);
 
     return toots;
 }

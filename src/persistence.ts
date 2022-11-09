@@ -13,6 +13,7 @@ export async function load():Promise<Persistence> {
   try {
     return ( JSON.parse( (await readFile(PERSISTENCE)).toString()) );
   } catch(_) {
+    console.log('no persistence file found. starting from scratch');
     return {};
   }
 }

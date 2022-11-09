@@ -1,15 +1,14 @@
 import Fastify from 'fastify';
 import { readFile } from 'node:fs/promises';
+
 import { getHomeTimeline } from './masto';
-import { load } from './persistence';
+import { Persistence } from './persistence';
 import { tootHTML } from './templates';
 
 const PORT = 3000;
 
-export async function main() {
+export async function main(per:Persistence) {
     const tpl = (await readFile('./templates/index.html')).toString();
-
-    const per = await load();
 
     const server = Fastify({});
 

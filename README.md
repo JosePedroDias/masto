@@ -31,5 +31,3 @@ npm run run
 ## TODO
 
 - numbers not being read?? (see emoji unit test)
-- read image descriptions
-- temporarily cache toots so boots about them get filtered out?

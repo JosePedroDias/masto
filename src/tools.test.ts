@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { plural, humanDate, deltaT, removeURLs, anchorURLs, removeHashes, removeUsers, removeEmojis, withoutHtml, isTextInPt } from './tools';
+import { plural, humanDate, deltaT, removeURLs, anchorURLs, removeHashes, removeUsers, removeEmojis, withoutHtml, isTextInPt, MIN_SECS, HOUR_SECS, DAY_SECS } from './tools';
 
 test('plural', (_t) => {
     assert.equal(plural('cheese', 0), 'cheeses');
@@ -23,13 +23,13 @@ test('deltaT', (_t) => {
 
     assert.equal(deltaT(ds(0), langEn, now), 'now');
     assert.equal(deltaT(ds(130), langEn, now), '2 mins');
-    assert.equal(deltaT(ds(3*60*60 + 1*60), langEn, now), '3 hours 1 min');
-    assert.equal(deltaT(ds(2*24*60*60 + 1*60), langEn, now), '2 days 1 min');
+    assert.equal(deltaT(ds(3*HOUR_SECS + 1*MIN_SECS), langEn, now), '3 hours 1 min');
+    assert.equal(deltaT(ds(2*DAY_SECS + 5*MIN_SECS), langEn, now), '2 days 5 mins');
 
     assert.equal(deltaT(ds(0), langPt, now), 'agora');
     assert.equal(deltaT(ds(130), langPt, now), '2 mins');
-    assert.equal(deltaT(ds(3*60*60 + 1*60), langPt, now), '3 horas 1 min');
-    assert.equal(deltaT(ds(2*24*60*60 + 1*60), langPt, now), '2 dias 1 min');
+    assert.equal(deltaT(ds(3*HOUR_SECS + 1*MIN_SECS), langPt, now), '3 horas 1 min');
+    assert.equal(deltaT(ds(2*DAY_SECS + 5*MIN_SECS), langPt, now), '2 dias 5 mins');
 });
 
 test('removeURLs', (_t) => {

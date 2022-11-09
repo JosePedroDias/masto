@@ -1,9 +1,9 @@
 import { i18n } from './i18n';
 import { ptWords } from './ptWords';
 
-const MIN = 60;
-const HOUR = 60 * MIN;
-const DAY = 24 * HOUR;
+export const MIN_SECS = 60;
+export const HOUR_SECS = 60 * MIN_SECS;
+export const DAY_SECS = 24 * HOUR_SECS;
 
 export function plural(word:string, quantity:number) {
   return `${word}${quantity !== 1 ? 's' : ''}`;
@@ -17,9 +17,9 @@ export function humanDate(dateS:string) {
 export function deltaT(dateS:string, lang:string, now:number=Date.now()) {
   const d = new Date(dateS);
   let dSecs = (now - d.valueOf()) / 1000;
-  const days = Math.floor(dSecs / DAY); dSecs -= days * DAY;
-  const hours = Math.floor(dSecs / HOUR); dSecs -= hours * HOUR;
-  const mins = Math.floor(dSecs / MIN); dSecs -= mins * MIN;
+  const days = Math.floor(dSecs / DAY_SECS); dSecs -= days * DAY_SECS;
+  const hours = Math.floor(dSecs / HOUR_SECS); dSecs -= hours * HOUR_SECS;
+  const mins = Math.floor(dSecs / MIN_SECS); dSecs -= mins * MIN_SECS;
   //return { days, hours, mins };
 
   const parts = [];
@@ -82,4 +82,5 @@ export function isTextInPt(s:string) {
   //console.log(foundWords);
   //console.log(count);
   return count > 0;
+  return count > 1;
 }

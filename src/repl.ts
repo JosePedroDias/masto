@@ -2,14 +2,11 @@ import { createInterface } from 'node:readline/promises';
 import { stdin, stdout } from 'node:process';
 
 import { getHomeTimeline } from './masto';
-
-import { load } from './persistence';
 import { tootTerm } from './templates';
+import { Persistence } from './persistence';
 
-export async function main() {
+export async function main(per:Persistence) {
   const rl = createInterface({ input: stdin, output: stdout });
-
-  const per = await load();
 
   let keepGoing = true;
   while (keepGoing) {

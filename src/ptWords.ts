@@ -35,7 +35,7 @@ export const ptWords = [
     'estão',
     'este',
     'estes',
-    'eu',
+    //'eu', // EU
     'feira',
     'há',
     'houve',
