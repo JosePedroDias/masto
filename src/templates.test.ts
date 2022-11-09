@@ -1,7 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { accountReader, tootReader, mediaHTML } from './templates';
+import {
+    accountReader, accountTerm, accountHTML,
+    tootReader, tootTerm, tootHTML,
+    mediaHTML } from './templates';
+
+// 2022-11-09T10:57:14.492Z
+const tsRgx = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/g;
+
+// 2022-11-09 10:57
+const humanTsRgx = /\d{4}-\d{2}-\d{2} \d{2}:\d{2}/g;
 
 const account:Entity.Account = {
     id: 'id',
@@ -146,9 +155,96 @@ test('accountReader', (_t) => {
     assert.equal(accountReader(mention), `username`);
 });
 
+test('accountTerm', (_t) => {
+    assert.equal(accountTerm(account), `display_name (acct) https://avatar.static.com`);
+    assert.equal(accountTerm(mention), `acct (https://url.com)`);
+});
+
+test('accountHTML', (_t) => {
+    assert.equal(accountHTML(account), `<a href="https://url.com" target="_blank">
+<img class="avatar" src="https://avatar.static.com">
+display_name (acct)
+</a>`);
+    assert.equal(accountHTML(mention), `<a href="https://url.com" target="_blank">acct</a>`);
+});
+
 test('tootReader', (_t) => {
-    assert.equal(tootReader(toot1), `display_name said now ago:\nhello world  hash yay.\n  `);
-    assert.equal(tootReader(toot2), `display_name said now ago:\nhello world  hash yay.\n  `);
+    assert.equal(tootReader(toot1), `display_name said now ago:\nhello world  hash yay.`);
+    assert.equal(tootReader(toot2), `display_name said now ago:\nhello world  hash yay.`);
+});
+
+test('tootTerm', (_t) => {
+    assert.equal(tootTerm(toot1).replace(tsRgx, 'TIMESTAMP'), `-------
+from: display_name (acct) https://avatar.static.com at TIMESTAMP (now)
+URL: https://url.com
+content:
+hello world @guy #hash yay.
+mentions:
+* acct (https://url.com)
+media:
+* https://attachment.com/image.jpg
+* https://attachment.com/video.mp4
+* https://attachment.com/audio.mp3
+`);
+  assert.equal(tootTerm(toot2).replace(tsRgx, 'TIMESTAMP'), `-------
+boost by display_name (acct) https://avatar.static.com at TIMESTAMP (now)
+from: display_name (acct) https://avatar.static.com at TIMESTAMP (now)
+URL: https://url.com
+content:
+hello world @guy #hash yay.
+mentions:
+* acct (https://url.com)
+media:
+* https://attachment.com/image.jpg
+* https://attachment.com/video.mp4
+* https://attachment.com/audio.mp3
+`);
+});
+
+test('tootHTML', (_t) => {
+    assert.equal(tootHTML(toot1).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
+<br/>
+from: <a href="https://url.com" target="_blank">
+<img class="avatar" src="https://avatar.static.com">
+display_name (acct)
+</a> at HUMAN_TIMESTAMP (now)<br/>
+URL: <a href="https://url.com" target="_blank">https://url.com</a><br/><br/>
+<div class="content">hello world @guy #hash yay.</div><br/>
+
+mentions:
+<div class"mentions"><a href="https://url.com" target="_blank">acct</a></div><br/>
+
+media:
+<div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" src="https://attachment.com/image.jpg"></a>
+<video controls src="https://attachment.com/video.mp4"></video>
+<audio controls src="https://attachment.com/audio.mp3"></audio></div>
+
+<div class="read-text" lang="en">display_name said now ago:
+hello world  hash yay.</div>
+</div>`);
+assert.equal(tootHTML(toot2).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
+boost by <a href="https://url.com" target="_blank">
+<img class="avatar" src="https://avatar.static.com">
+display_name (acct)
+</a> at HUMAN_TIMESTAMP (now)<br/>
+from: <a href="https://url.com" target="_blank">
+<img class="avatar" src="https://avatar.static.com">
+display_name (acct)
+</a> at HUMAN_TIMESTAMP (now)<br/>
+URL: <a href="https://url.com" target="_blank">https://url.com</a><br/><br/>
+<div class="content">hello world @guy #hash yay.</div><br/>
+
+mentions:
+<div class"mentions"><a href="https://url.com" target="_blank">acct</a></div><br/>
+
+media:
+<div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" src="https://attachment.com/image.jpg"></a>
+<video controls src="https://attachment.com/video.mp4"></video>
+<audio controls src="https://attachment.com/audio.mp3"></audio></div>
+
+<div class="read-text" lang="en">display_name said now ago:
+hello world  hash yay.</div>
+</div>`);
 });
 
 test('mediaHTML', (_t) => {

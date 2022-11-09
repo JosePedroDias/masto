@@ -14,8 +14,8 @@ export function accountHTML(_acc: Entity.Account | Entity.Mention) {
     if ('avatar_static' in _acc) {
         const acc = _acc as Entity.Account;
         return `<a href="${acc.url}" target="_blank">
-    <img class="avatar" src="${acc.avatar_static}">
-    ${acc.display_name} (${acc.acct})
+<img class="avatar" src="${acc.avatar_static}">
+${acc.display_name} (${acc.acct})
 </a>`;
     }
     const acc = _acc as Entity.Mention;
@@ -60,11 +60,10 @@ export function tootTerm(status: Entity.Status) {
     const mentions2 = mentions.map(ment => accountTerm(ment)).join('\n* ');
     const media2 = media.map(m => m.url).join('\n* ');
 
-    return `-------${status.reblog ? `\n ${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${status.created_at} (${deltaT(status.created_at, lang)})` : ''}
+    return `-------${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${status.created_at} (${deltaT(status.created_at, lang)})` : ''}
 ${i('from')}: ${accountTerm(acc)} ${i('at')} ${core.created_at} (${deltaT(core.created_at, lang)})
 ${i('URL')}: ${core.url}
-${i('content')}:\n${withoutHtml(content).trim()}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}
-  `;
+${i('content')}:\n${withoutHtml(content).trim()}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
 }
 
 export function tootHTML(status: Entity.Status) {
@@ -84,19 +83,13 @@ export function tootHTML(status: Entity.Status) {
     const media2 = media.map(m => mediaHTML(m.url)).join('\n');
 
     return `<div class="toot">
-    ${status.reblog ? `\n ${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})` : ''}
-    <br/>
-    ${i('from')}: ${accountHTML(acc)} ${i('at')} ${humanDate(core.created_at)} (${deltaT(core.created_at, lang)})
-    <br/>
-    ${i('URL')}: <a href="${core.url}" target="_blank">${core.url}</a>
-    <br/>
-    <br/>
-    <div class="content">${withoutHtml(content, 'anchor').trim()}</div>
-    <br/>
-    ${mentions.length ? `\n ${i('mentions')}:\n <div class"mentions">${mentions2}</div>` : ''}
-    <br/>
-    ${media.length ? `\n ${i('media')}:\n <div class="medias">${media2}</div>\n` : ''}
-    <div class="read-text" lang="${lang}">${tootReader(status)}</div>
+${status.reblog ? `${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})` : ''}<br/>
+${i('from')}: ${accountHTML(acc)} ${i('at')} ${humanDate(core.created_at)} (${deltaT(core.created_at, lang)})<br/>
+${i('URL')}: <a href="${core.url}" target="_blank">${core.url}</a><br/><br/>
+<div class="content">${withoutHtml(content, 'anchor').trim()}</div><br/>
+${mentions.length ? `\n${i('mentions')}:\n<div class"mentions">${mentions2}</div>` : ''}<br/>
+${media.length ? `\n${i('media')}:\n<div class="medias">${media2}</div>\n` : ''}
+<div class="read-text" lang="${lang}">${tootReader(status)}</div>
 </div>`;
 }
 
@@ -111,6 +104,5 @@ export function tootReader(status: Entity.Status) {
     const i = (k:string) => i18n(k, lang);
 
     return `${accountReader(acc)} ${i('said')} ${deltaT(core.created_at, lang)} ${i('ago')}:
-${withoutHtml(content, true).trim()}
-  `;
+${withoutHtml(content, true).trim()}`;
 }
