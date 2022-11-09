@@ -81,5 +81,5 @@ export function isTextInPt(s:string) {
   let count = foundWords.length;
   //console.log(foundWords);
   //console.log(count);
-  return count >= 2;
+  return count > 0;
 }
