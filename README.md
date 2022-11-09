@@ -30,4 +30,4 @@ npm run run
 
 ## TODO
 
-- numbers not being read?? (see emoji unit test)
+- fall back to languages other than english and portuguese? which criteria?

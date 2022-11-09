@@ -27,6 +27,8 @@ export async function getHomeTimeline(per:Persistence): Promise<Array<Entity.Sta
         return !wasInCache;
     });
 
+    toots.reverse(); // get them sorted from older to newer
+
     await saveCache();
 
     const _toots = [...toots];

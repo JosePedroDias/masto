@@ -48,7 +48,10 @@ export function removeUsers(s:string) {
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Character_Classes
 export function removeEmojis(s:string) {
-  return s.replaceAll(/\p{Emoji}/ug, '');
+  return s.replace(/<a?:.+?:\d{18}>|\p{Extended_Pictographic}/gu, ''); // TOO FEW
+  //return s.replace(/[\u0000-\u007F]/g, ''); // TOO MANY
+  //return s.replace(/(?![áàãâéèêíìóòõôúùçÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÇ])[\u0000-\u007F]/g, ''); // DOES NOT WORK
+  
 }
 
 export function withoutHtml(s:string, noURLs:boolean|string=false) {
@@ -82,5 +85,4 @@ export function isTextInPt(s:string) {
   //console.log(foundWords);
   //console.log(count);
   return count > 0;
-  return count > 1;
 }

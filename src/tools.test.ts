@@ -51,9 +51,11 @@ test('removeUsers', (_t) => {
     assert.equal(removeUsers(`before @aGuy @anotherGuy @one@two yeah`), `before    yeah`);
 });
 
-test('removeEmojis', { skip: true }, (_t) => {
-    // TODO 4312 is being incorrectly removed!
-    assert.equal(removeEmojis(`before 😎 stuff aa✅str 43✅12 yeah`), `before  stuff aastr 4312  yeah`);
+test('removeEmojis', (_t) => {
+    assert.equal(removeEmojis(`before 😎 stuff aa✅str 43✅12 yeah`), `before  stuff aastr 4312 yeah`);
+    //assert.equal(removeEmojis(`a🇺🇦1🇺🇦b🇺🇦2`), `a1b2`);
+    assert.equal(removeEmojis(`portuguese: áàãâéèêíìóòõôúùçÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÇ`), `portuguese: áàãâéèêíìóòõôúùçÁÀÃÂÉÈÊÍÌÓÒÕÔÚÙÇ`);
+    //assert.equal(removeEmojis(`japanese: 身分 korean: 테스트 chinese: 测试 hindi: परीक् hebrew: מִבְחָן`), `japanese:  korean:  chinese:  hindi:  hebrew: `);
 });
 
 test('withoutHtml', (_t) => {
