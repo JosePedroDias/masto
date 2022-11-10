@@ -73,4 +73,5 @@ test('rewriteUrlFromOurInstance', (_t) => {
     assert.equal(rewriteUrlFromOurInstance(`https://mastodon.social/@JosePedroDias`), `https://mastodon.social/@JosePedroDias`); // because that's my own instance
     assert.equal(rewriteUrlFromOurInstance(`https://masto.pt/@lucidream`), `https://mastodon.social/@lucidream@masto.pt`);
     assert.equal(rewriteUrlFromOurInstance(`https://masto.pt/@lucidream/109319416809403925`), `https://mastodon.social/@lucidream@masto.pt/109319416809403925`);
+    assert.equal(rewriteUrlFromOurInstance(`https://masto.pt/@lucidream/123`, `/456`), `https://mastodon.social/@lucidream@masto.pt/456`);
 });

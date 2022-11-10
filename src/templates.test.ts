@@ -113,7 +113,7 @@ const attachmentUnknown:Entity.Attachment = {
 };
 
 const toot1:Entity.Status = {
-    id: 'id',
+    id: 'localId',
     uri: 'https://instance.com/users/username/statuses/id',
     url: 'https://instance.com/@username/id',
     account: account,
@@ -153,8 +153,8 @@ const toot1:Entity.Status = {
 };
 
 const toot2:Entity.Status = {
-    id: 'id',
-    uri: 'https://instance.com/users/username/statuses/id',
+    id: 'localId2',
+    uri: 'https://instance.com/users/username/statuses/id2',
     url: 'https://instance.com/@username/id',
     account: account,
     in_reply_to_id: null,
@@ -221,7 +221,7 @@ description`);
 
 test('tootTerm', (_t) => {
     assert.equal(tootTerm(toot1).replace(tsRgx, 'TIMESTAMP'), `-------
-URL: https://mastodon.social/@username@instance.com/id
+URL: https://mastodon.social/@username@instance.com/localId
 from: display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com at TIMESTAMP (now)
 content:
 hello world @guy #hash yay.
@@ -233,7 +233,7 @@ media:
 * https://attachment.com/audio.mp3
 `);
   assert.equal(tootTerm(toot2).replace(tsRgx, 'TIMESTAMP'), `-------
-URL: https://mastodon.social/@username@instance.com/id
+URL: https://mastodon.social/@username@instance.com/localId
 boost by display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com at TIMESTAMP (now)
 from: display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com at TIMESTAMP (now)
 content:
@@ -250,7 +250,7 @@ media:
 test('tootHTML', (_t) => {
     assert.equal(tootHTML(toot1).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
 <div class="header">
-URL: <a href="https://mastodon.social/@username@instance.com/id" target="_blank">https://instance.com/@username/id</a><br/>
+URL: <a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
 from: <a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
 display_name (username@instance.com)
@@ -275,7 +275,7 @@ description</div>
 </div>`);
 assert.equal(tootHTML(toot2).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
 <div class="header">
-URL: <a href="https://mastodon.social/@username@instance.com/id" target="_blank">https://instance.com/@username/id</a><br/>
+URL: <a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
 boost by <a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
 display_name (username@instance.com)

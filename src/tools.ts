@@ -11,14 +11,14 @@ export function plural(word:string, quantity:number) {
 }
 
 const USER_OR_STATUS_RGX = /(https?:\/\/[a-zA-Z0-9-\.]+)\/(@\w+)(.*)/;
-export function rewriteUrlFromOurInstance(url:string) :string {
+export function rewriteUrlFromOurInstance(url:string, suffixOverride?:string) :string {
   const ourInstance = getBaseUrl();
   const m = USER_OR_STATUS_RGX.exec(url);
   if (!m) return url;
   const [_, instance, user, suffix] = m;
   if (instance === ourInstance) return url;
   const instanceWithoutProtocol = instance.split('/').pop();
-  return `${ourInstance}/${user}@${instanceWithoutProtocol}${suffix}`;
+  return `${ourInstance}/${user}@${instanceWithoutProtocol}${suffixOverride||suffix}`;
 }
 
 export function humanDate(dateS:string) {

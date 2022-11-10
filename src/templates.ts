@@ -62,7 +62,7 @@ export function tootTerm(status: Entity.Status) {
     const media2 = media.map(m => m.url).join('\n* ');
 
     return `-------
-${i('URL')}: ${rewriteUrlFromOurInstance(core.url)}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${status.created_at} (${deltaT(status.created_at, lang)})` : ''}
+${i('URL')}: ${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${status.created_at} (${deltaT(status.created_at, lang)})` : ''}
 ${i('from')}: ${accountTerm(acc)} ${i('at')} ${core.created_at} (${deltaT(core.created_at, lang)})
 ${i('content')}:\n${withoutHtml(content).trim()}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
 }
@@ -85,7 +85,7 @@ export function tootHTML(status: Entity.Status) {
 
     return `<div class="toot">
 <div class="header">
-${i('URL')}: <a href="${rewriteUrlFromOurInstance(core.url)}" target="_blank">${core.url}</a><br/>${status.reblog ? `\n${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})<br/>` : ''}
+${i('URL')}: <a href="${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}" target="_blank">${core.url}</a><br/>${status.reblog ? `\n${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})<br/>` : ''}
 ${i('from')}: ${accountHTML(acc)} ${i('at')} ${humanDate(core.created_at)} (${deltaT(core.created_at, lang)})
 </div>
 
