@@ -248,7 +248,7 @@ media:
 });
 
 test('tootHTML', (_t) => {
-    assert.equal(tootHTML(toot1).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot visibility-public reply-no poll-no cw-unknown">
+    assert.equal(tootHTML(toot1).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot visibility-public reply-no poll-no cw-no">
 <div class="header">
 <a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
 from: <a href="https://mastodon.social/@username@instance.com" target="_blank">
@@ -273,7 +273,7 @@ description
 description
 description</div>
 </div>`);
-assert.equal(tootHTML(toot2).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot visibility-public reply-no poll-no cw-unknown">
+assert.equal(tootHTML(toot2).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot visibility-public reply-no poll-no cw-no">
 <div class="header">
 <a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
 boost by <a href="https://mastodon.social/@username@instance.com" target="_blank">

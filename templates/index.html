@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
         <title>mastodon</title>
 
         <style>
@@ -11,25 +11,57 @@
             }
 
             body {
-                font-family: sans-serif;
+                font-family: Helvetica, Arial, sans-serif;
             }
 
             .toot {
                 margin-bottom: 5px;
                 padding: 5px;
+                border: 3px solid rgb(85, 23, 108);
+                border-radius: 10px;
             }
 
             .toot:nth-child(odd) {
-                background: #CCC;
+                background: #EEE;
             }
 
             .toot.reading {
-                border: 2px solid red;
+                border: 3px solid rgb(191, 255, 0);
+            }
+
+            .toot .header {
+                font-family: monospace;
+                min-height: 100px;
+                font-size: 14px;
+                line-height: 22px;
+                background-color: rgba(85, 23, 108, 0.1);
+            }
+
+            .toot.reading .header {
+                background-color: rgba(191, 255, 0, 0.1);
+            }
+
+            .toot .header img {
+                float: left;
+                border: 2px solid transparent;
+                border-radius: 6px;
+            }
+
+            .toot .cw {
+                background-color: rgb(111, 39, 39);
+                color: white;
+                font-weight: 600;
+                padding: 8px;
+            }
+
+            .toot .poll {
+                font-style: italic;
             }
 
             .toot .content {
                 font-size: 23px;
                 line-height: 40px;
+                padding: 10px;
             }
 
             .avatar {

@@ -70,11 +70,13 @@ export function tootTerm(status: Entity.Status) {
         poll = core.poll.options.map(opt => `* ${opt.title}`).join(`\n`);
     }
 
+    const cw = core.sensitive ? (core.spoiler_text || i('content warning')) : '';
+
     return `-------
 ${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${status.created_at} (${deltaT(status.created_at, lang)})` : ''}
 ${i('from')}: ${accountTerm(acc)} ${i('at')} ${core.created_at} (${deltaT(core.created_at, lang)})
 
-${withoutHtml(content).trim()}${poll ? `\n${poll}` : ''}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
+${cw ? `** ${cw} **\n` : ''}${withoutHtml(content).trim()}${poll ? `\n${poll}` : ''}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
 }
 
 export function tootHTML(status: Entity.Status) {
@@ -93,6 +95,8 @@ export function tootHTML(status: Entity.Status) {
     const mentions2 = mentions.map(m => accountHTML(m)).join(', ');
     const media2 = media.map(m => mediaHTML(m)).join('\n');
 
+    const cw = core.sensitive ? (core.spoiler_text || i('content warning')) : '';
+
     let poll;
     if (core.poll) {
         const tmp = [`<ul class="poll">`];
@@ -103,13 +107,13 @@ export function tootHTML(status: Entity.Status) {
         poll = tmp.join('');
     }
 
-    return `<div class="toot visibility-${core.visibility} reply-${toYN(!!core.in_reply_to_account_id)} poll-${toYN(!!core.poll)} cw-unknown">
+    return `<div class="toot visibility-${core.visibility} reply-${toYN(!!core.in_reply_to_account_id)} poll-${toYN(!!core.poll)} cw-${toYN(!!cw)}">
 <div class="header">
 <a href="${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}" target="_blank">${core.url}</a><br/>${status.reblog ? `\n${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})<br/>` : ''}
 ${i('from')}: ${accountHTML(acc)} ${i('at')} ${humanDate(core.created_at)} (${deltaT(core.created_at, lang)})
 </div>
 
-<div class="content">${withoutHtml(content, 'anchor').trim()}${poll ? `\n${poll}`: ''}</div>
+${cw ? `<div class="cw">${cw}</div>\n` : ''}<div class="content">${withoutHtml(content, 'anchor').trim()}${poll ? `\n${poll}`: ''}</div>
 ${mentions.length ? `\n${i('mentions')}:\n<div class"mentions">${mentions2}</div>` : ''}
 ${media.length ? `\n${i('media')}:\n<div class="medias">${media2}</div>\n` : ''}
 <div class="read-text" lang="${lang}">${tootReader(status)}</div>
@@ -121,19 +125,21 @@ export function tootReader(status: Entity.Status) {
     const acc = core.account;
     const content = core.content;
 
+    const i = (k:string) => i18n(k, lang);
+
     let poll;
     if (core.poll) {
         poll = core.poll.options.map(opt => opt.title).join(' ');
     }
 
+    const cw = core.sensitive ? (core.spoiler_text || i('content warning')) : '';
+
     const lang = isTextInPt(withoutHtml(content, true)) ? 'pt' : 'en';
     //const lang = core.language || status.language || '';
-
-    const i = (k:string) => i18n(k, lang);
 
     const media = core.media_attachments;
     const mediaS = media.map(m => withoutHtml(m.description || "", true).trim()).join('\n');
 
     return `${accountReader(acc)} ${i('said')} ${deltaT(core.created_at, lang)} ${i('ago')}:
-${withoutHtml(content, true).trim()}${poll ? `\n${poll}` : ''}${mediaS ? '\n' + mediaS :''}`;
+${cw ? `${cw}\n` : ''}${withoutHtml(content, true).trim()}${poll ? `\n${poll}` : ''}${mediaS ? '\n' + mediaS :''}`;
 }

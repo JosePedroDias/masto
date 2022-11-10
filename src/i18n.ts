@@ -4,6 +4,7 @@ const lookup:{ [key:string] : {[key:string]: string } } = {
         boost: 'boost',
         by: 'por',
         content: 'conteúdo',
+        'content warning': 'aviso',
         day: 'dia',
         from: 'de',
         hour: 'hora',
