@@ -221,8 +221,8 @@ description`);
 
 test('tootTerm', (_t) => {
     assert.equal(tootTerm(toot1).replace(tsRgx, 'TIMESTAMP'), `-------
-from: display_name (acct) https://avatar.static.com at TIMESTAMP (now)
 URL: https://url.com
+from: display_name (acct) https://avatar.static.com at TIMESTAMP (now)
 content:
 hello world @guy #hash yay.
 mentions:
@@ -233,9 +233,9 @@ media:
 * https://attachment.com/audio.mp3
 `);
   assert.equal(tootTerm(toot2).replace(tsRgx, 'TIMESTAMP'), `-------
+URL: https://url.com
 boost by display_name (acct) https://avatar.static.com at TIMESTAMP (now)
 from: display_name (acct) https://avatar.static.com at TIMESTAMP (now)
-URL: https://url.com
 content:
 hello world @guy #hash yay.
 mentions:
@@ -249,16 +249,18 @@ media:
 
 test('tootHTML', (_t) => {
     assert.equal(tootHTML(toot1).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
-<br/>
+<div class="header">
+URL: <a href="https://url.com" target="_blank">https://url.com</a><br/>
 from: <a href="https://url.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
 display_name (acct)
-</a> at HUMAN_TIMESTAMP (now)<br/>
-URL: <a href="https://url.com" target="_blank">https://url.com</a><br/><br/>
-<div class="content">hello world @guy #hash yay.</div><br/>
+</a> at HUMAN_TIMESTAMP (now)
+</div>
+
+<div class="content">hello world @guy #hash yay.</div>
 
 mentions:
-<div class"mentions"><a href="https://url.com" target="_blank">acct</a></div><br/>
+<div class"mentions"><a href="https://url.com" target="_blank">acct</a></div>
 
 media:
 <div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>
@@ -272,6 +274,8 @@ description
 description</div>
 </div>`);
 assert.equal(tootHTML(toot2).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
+<div class="header">
+URL: <a href="https://url.com" target="_blank">https://url.com</a><br/>
 boost by <a href="https://url.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
 display_name (acct)
@@ -279,12 +283,13 @@ display_name (acct)
 from: <a href="https://url.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
 display_name (acct)
-</a> at HUMAN_TIMESTAMP (now)<br/>
-URL: <a href="https://url.com" target="_blank">https://url.com</a><br/><br/>
-<div class="content">hello world @guy #hash yay.</div><br/>
+</a> at HUMAN_TIMESTAMP (now)
+</div>
+
+<div class="content">hello world @guy #hash yay.</div>
 
 mentions:
-<div class"mentions"><a href="https://url.com" target="_blank">acct</a></div><br/>
+<div class"mentions"><a href="https://url.com" target="_blank">acct</a></div>
 
 media:
 <div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>

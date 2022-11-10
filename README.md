@@ -30,4 +30,8 @@ npm run run
 
 ## TODO
 
+- bug in URL wrapping limits (eating up whitespace?)
+- wrap urls with its metadata? ~ https://github.com/jshemas/openGraphScraper
+- support content warning https://masto.pt/@trombalazana/109316118487009405
+- show polls? https://mastodon.gamedev.place/@djlink/109315216054813414
 - fall back to languages other than english and portuguese? which criteria?

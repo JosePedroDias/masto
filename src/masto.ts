@@ -32,14 +32,11 @@ export async function getHomeTimeline(per:Persistence): Promise<Array<Entity.Sta
     await saveCache();
 
     const _toots = [...toots];
-
-    console.log('#', _toots.length, per);
-
     const _first = _toots.shift()?.id;
     const _last = _toots.pop()?.id || _first;
 
     //if (_first) { per.max_id = _first; per.min_id = undefined; } // READING NOW TO PAST WORKS!
-    if (_first) { per.min_id = _first; per.max_id = undefined; } // READING NEWEST SINCE LAST READ
+    if (_last) { per.min_id = _last; per.max_id = undefined; } // READING NEWEST SINCE LAST READ
     // min_id max_id=109308584187095749
     await savePersistence(per);
 
