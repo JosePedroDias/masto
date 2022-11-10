@@ -68,7 +68,6 @@ test('isTextInPt', (_t) => {
     assert.equal(isTextInPt(`Sim, é!`), true);
 });
 
-
 test('rewriteUrlFromOurInstance', (_t) => {
     assert.equal(rewriteUrlFromOurInstance(`https://mastodon.social/@JosePedroDias`), `https://mastodon.social/@JosePedroDias`); // because that's my own instance
     assert.equal(rewriteUrlFromOurInstance(`https://masto.pt/@lucidream`), `https://mastodon.social/@lucidream@masto.pt`);

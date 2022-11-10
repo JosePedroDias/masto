@@ -1,10 +1,14 @@
 import { i18n } from "./i18n";
 import { deltaT, humanDate, isTextInPt, removeEmojis, withoutHtml, rewriteUrlFromOurInstance } from "./tools";
 
+function toYN(b:boolean) {
+    return b ? 'yes' : 'no';
+}
+
 export function accountTerm(_acc: Entity.Account | Entity.Mention) {
     if ('avatar_static' in _acc) {
         const acc = _acc as Entity.Account;
-        return `${acc.display_name} (${rewriteUrlFromOurInstance(acc.url)}) ${acc.avatar_static}`;
+        return `${acc.display_name} (${rewriteUrlFromOurInstance(acc.url)})`;
     }
     const acc = _acc as Entity.Mention;
     return `${acc.acct} (${rewriteUrlFromOurInstance(acc.url)})`;
@@ -58,13 +62,19 @@ export function tootTerm(status: Entity.Status) {
     const mentions = core.mentions;
     const media = core.media_attachments;
 
-    const mentions2 = mentions.map(ment => accountTerm(ment)).join('\n* ');
+    const mentions2 = mentions.map(m => accountTerm(m)).join('\n* ');
     const media2 = media.map(m => m.url).join('\n* ');
 
+    let poll;
+    if (core.poll) {
+        poll = core.poll.options.map(opt => `* ${opt.title}`).join(`\n`);
+    }
+
     return `-------
-${i('URL')}: ${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${status.created_at} (${deltaT(status.created_at, lang)})` : ''}
+${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${status.created_at} (${deltaT(status.created_at, lang)})` : ''}
 ${i('from')}: ${accountTerm(acc)} ${i('at')} ${core.created_at} (${deltaT(core.created_at, lang)})
-${i('content')}:\n${withoutHtml(content).trim()}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
+
+${withoutHtml(content).trim()}${poll ? `\n${poll}` : ''}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
 }
 
 export function tootHTML(status: Entity.Status) {
@@ -83,13 +93,23 @@ export function tootHTML(status: Entity.Status) {
     const mentions2 = mentions.map(m => accountHTML(m)).join(', ');
     const media2 = media.map(m => mediaHTML(m)).join('\n');
 
-    return `<div class="toot">
+    let poll;
+    if (core.poll) {
+        const tmp = [`<ul class="poll">`];
+        for (const opt of core.poll.options) {
+            tmp.push(`<li>${opt.title}</li>`)
+        }
+        tmp.push(`</ul>`);
+        poll = tmp.join('');
+    }
+
+    return `<div class="toot visibility-${core.visibility} reply-${toYN(!!core.in_reply_to_account_id)} poll-${toYN(!!core.poll)} cw-unknown">
 <div class="header">
-${i('URL')}: <a href="${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}" target="_blank">${core.url}</a><br/>${status.reblog ? `\n${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})<br/>` : ''}
+<a href="${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}" target="_blank">${core.url}</a><br/>${status.reblog ? `\n${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})<br/>` : ''}
 ${i('from')}: ${accountHTML(acc)} ${i('at')} ${humanDate(core.created_at)} (${deltaT(core.created_at, lang)})
 </div>
 
-<div class="content">${withoutHtml(content, 'anchor').trim()}</div>
+<div class="content">${withoutHtml(content, 'anchor').trim()}${poll ? `\n${poll}`: ''}</div>
 ${mentions.length ? `\n${i('mentions')}:\n<div class"mentions">${mentions2}</div>` : ''}
 ${media.length ? `\n${i('media')}:\n<div class="medias">${media2}</div>\n` : ''}
 <div class="read-text" lang="${lang}">${tootReader(status)}</div>
@@ -101,6 +121,11 @@ export function tootReader(status: Entity.Status) {
     const acc = core.account;
     const content = core.content;
 
+    let poll;
+    if (core.poll) {
+        poll = core.poll.options.map(opt => opt.title).join(' ');
+    }
+
     const lang = isTextInPt(withoutHtml(content, true)) ? 'pt' : 'en';
     //const lang = core.language || status.language || '';
 
@@ -110,5 +135,5 @@ export function tootReader(status: Entity.Status) {
     const mediaS = media.map(m => withoutHtml(m.description || "", true).trim()).join('\n');
 
     return `${accountReader(acc)} ${i('said')} ${deltaT(core.created_at, lang)} ${i('ago')}:
-${withoutHtml(content, true).trim()}${mediaS ? '\n' + mediaS :''}`;
+${withoutHtml(content, true).trim()}${poll ? `\n${poll}` : ''}${mediaS ? '\n' + mediaS :''}`;
 }

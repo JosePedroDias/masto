@@ -194,7 +194,7 @@ test('accountReader', (_t) => {
 });
 
 test('accountTerm', (_t) => {
-    assert.equal(accountTerm(account), `display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com`);
+    assert.equal(accountTerm(account), `display_name (https://mastodon.social/@username@instance.com)`);
     assert.equal(accountTerm(mention), `username@instance.com (https://mastodon.social/@username@instance.com)`);
 });
 
@@ -221,9 +221,9 @@ description`);
 
 test('tootTerm', (_t) => {
     assert.equal(tootTerm(toot1).replace(tsRgx, 'TIMESTAMP'), `-------
-URL: https://mastodon.social/@username@instance.com/localId
-from: display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com at TIMESTAMP (now)
-content:
+https://mastodon.social/@username@instance.com/localId
+from: display_name (https://mastodon.social/@username@instance.com) at TIMESTAMP (now)
+
 hello world @guy #hash yay.
 mentions:
 * username@instance.com (https://mastodon.social/@username@instance.com)
@@ -233,10 +233,10 @@ media:
 * https://attachment.com/audio.mp3
 `);
   assert.equal(tootTerm(toot2).replace(tsRgx, 'TIMESTAMP'), `-------
-URL: https://mastodon.social/@username@instance.com/localId
-boost by display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com at TIMESTAMP (now)
-from: display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com at TIMESTAMP (now)
-content:
+https://mastodon.social/@username@instance.com/localId
+boost by display_name (https://mastodon.social/@username@instance.com) at TIMESTAMP (now)
+from: display_name (https://mastodon.social/@username@instance.com) at TIMESTAMP (now)
+
 hello world @guy #hash yay.
 mentions:
 * username@instance.com (https://mastodon.social/@username@instance.com)
@@ -248,9 +248,9 @@ media:
 });
 
 test('tootHTML', (_t) => {
-    assert.equal(tootHTML(toot1).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
+    assert.equal(tootHTML(toot1).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot visibility-public reply-no poll-no cw-unknown">
 <div class="header">
-URL: <a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
+<a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
 from: <a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
 display_name (username@instance.com)
@@ -273,9 +273,9 @@ description
 description
 description</div>
 </div>`);
-assert.equal(tootHTML(toot2).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
+assert.equal(tootHTML(toot2).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot visibility-public reply-no poll-no cw-unknown">
 <div class="header">
-URL: <a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
+<a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
 boost by <a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
 display_name (username@instance.com)

@@ -2,6 +2,8 @@ import { createInterface } from 'node:readline/promises';
 import { stdin, stdout } from 'node:process';
 
 import { getHomeTimeline } from './masto';
+//import { getHomeTimeline } from './mocked-masto';
+
 import { tootTerm } from './templates';
 import { Persistence } from './persistence';
 

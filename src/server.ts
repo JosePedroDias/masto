@@ -2,6 +2,8 @@ import Fastify from 'fastify';
 import { readFile } from 'node:fs/promises';
 
 import { getHomeTimeline } from './masto';
+//import { getHomeTimeline } from './mocked-masto';
+
 import { Persistence } from './persistence';
 import { tootHTML } from './templates';
 
