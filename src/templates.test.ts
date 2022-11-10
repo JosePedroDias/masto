@@ -6,9 +6,6 @@ import {
     tootReader, tootTerm, tootHTML,
     mediaHTML } from './templates';
 
-// 2022-11-09T10:57:14.492Z
-const tsRgx = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/g;
-
 // 2022-11-09 10:57
 const humanTsRgx = /\d{4}-\d{2}-\d{2} \d{2}:\d{2}/g;
 
@@ -220,9 +217,9 @@ description`);
 });
 
 test('tootTerm', (_t) => {
-    assert.equal(tootTerm(toot1).replace(tsRgx, 'TIMESTAMP'), `-------
+    assert.equal(tootTerm(toot1).replace(humanTsRgx, 'TS'), `-------
 https://mastodon.social/@username@instance.com/localId
-from: display_name (https://mastodon.social/@username@instance.com) at TIMESTAMP (now)
+from: display_name (https://mastodon.social/@username@instance.com) at TS (now)
 
 hello world @guy #hash yay.
 mentions:
@@ -232,10 +229,10 @@ media:
 * https://attachment.com/video.mp4
 * https://attachment.com/audio.mp3
 `);
-  assert.equal(tootTerm(toot2).replace(tsRgx, 'TIMESTAMP'), `-------
+  assert.equal(tootTerm(toot2).replace(humanTsRgx, 'TS'), `-------
 https://mastodon.social/@username@instance.com/localId
-boost by display_name (https://mastodon.social/@username@instance.com) at TIMESTAMP (now)
-from: display_name (https://mastodon.social/@username@instance.com) at TIMESTAMP (now)
+boost by display_name (https://mastodon.social/@username@instance.com) at TS (now)
+from: display_name (https://mastodon.social/@username@instance.com) at TS (now)
 
 hello world @guy #hash yay.
 mentions:
@@ -248,13 +245,13 @@ media:
 });
 
 test('tootHTML', (_t) => {
-    assert.equal(tootHTML(toot1).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot visibility-public reply-no poll-no cw-no">
+    assert.equal(tootHTML(toot1).replace(humanTsRgx, 'TS'), `<div class="toot visibility-public reply-no poll-no cw-no">
 <div class="header">
 <a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
 from: <a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
 display_name (username@instance.com)
-</a> at HUMAN_TIMESTAMP (now)
+</a> at TS (now)
 </div>
 
 <div class="content">hello world @guy #hash yay.</div>
@@ -273,17 +270,17 @@ description
 description
 description</div>
 </div>`);
-assert.equal(tootHTML(toot2).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot visibility-public reply-no poll-no cw-no">
+assert.equal(tootHTML(toot2).replace(humanTsRgx, 'TS'), `<div class="toot visibility-public reply-no poll-no cw-no">
 <div class="header">
 <a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
 boost by <a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
 display_name (username@instance.com)
-</a> at HUMAN_TIMESTAMP (now)<br/>
+</a> at TS (now)<br/>
 from: <a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
 display_name (username@instance.com)
-</a> at HUMAN_TIMESTAMP (now)
+</a> at TS (now)
 </div>
 
 <div class="content">hello world @guy #hash yay.</div>

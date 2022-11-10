@@ -73,8 +73,8 @@ export function tootTerm(status: Entity.Status) {
     const cw = core.sensitive ? (core.spoiler_text || i('content warning')) : '';
 
     return `-------
-${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${status.created_at} (${deltaT(status.created_at, lang)})` : ''}
-${i('from')}: ${accountTerm(acc)} ${i('at')} ${core.created_at} (${deltaT(core.created_at, lang)})
+${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})` : ''}
+${i('from')}: ${accountTerm(acc)} ${i('at')} ${humanDate(core.created_at)} (${deltaT(core.created_at, lang)})
 
 ${cw ? `** ${cw} **\n` : ''}${withoutHtml(content).trim()}${poll ? `\n${poll}` : ''}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
 }
