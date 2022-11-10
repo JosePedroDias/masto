@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { plural, humanDate, deltaT, removeURLs, anchorURLs, removeHashes, removeUsers, removeEmojis, withoutHtml, isTextInPt, MIN_SECS, HOUR_SECS, DAY_SECS } from './tools';
+import { plural, humanDate, deltaT, removeURLs, anchorURLs, removeHashes, removeUsers, removeEmojis, withoutHtml, isTextInPt, rewriteUrlFromOurInstance, MIN_SECS, HOUR_SECS, DAY_SECS } from './tools';
 
 test('plural', (_t) => {
     assert.equal(plural('cheese', 0), 'cheeses');
@@ -66,4 +66,11 @@ test('withoutHtml', (_t) => {
 test('isTextInPt', (_t) => {
     assert.equal(isTextInPt(`hello world`), false);
     assert.equal(isTextInPt(`Sim, é!`), true);
+});
+
+
+test('rewriteUrlFromOurInstance', (_t) => {
+    assert.equal(rewriteUrlFromOurInstance(`https://mastodon.social/@JosePedroDias`), `https://mastodon.social/@JosePedroDias`); // because that's my own instance
+    assert.equal(rewriteUrlFromOurInstance(`https://masto.pt/@lucidream`), `https://mastodon.social/@lucidream@masto.pt`);
+    assert.equal(rewriteUrlFromOurInstance(`https://masto.pt/@lucidream/109319416809403925`), `https://mastodon.social/@lucidream@masto.pt/109319416809403925`);
 });

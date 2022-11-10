@@ -1,15 +1,15 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
-
+import { writeFile } from 'node:fs/promises';
 import generator, { Entity, Mastodon } from 'megalodon';
+
+import { getBaseUrl, getAccessToken } from './config';
 import { Persistence, save as savePersistence } from './persistence';
 import { isInCache, memorize, save as saveCache } from './cache';
 
 // @ts-ignore
 const client: Mastodon = generator.default(
     'mastodon',
-    process.env.BASE_URL,
-    process.env.ACCESS_TOKEN
+    getBaseUrl(),
+    getAccessToken()
 );
 
 export async function getHomeTimeline(per:Persistence): Promise<Array<Entity.Status>> {
@@ -39,6 +39,8 @@ export async function getHomeTimeline(per:Persistence): Promise<Array<Entity.Sta
     if (_last) { per.min_id = _last; per.max_id = undefined; } // READING NEWEST SINCE LAST READ
     // min_id max_id=109308584187095749
     await savePersistence(per);
+
+    writeFile('last_statuses.json', JSON.stringify(toots, null, 2));
 
     return toots;
 }

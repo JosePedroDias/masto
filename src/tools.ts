@@ -1,5 +1,6 @@
 import { i18n } from './i18n';
 import { ptWords } from './ptWords';
+import { getBaseUrl } from './config';
 
 export const MIN_SECS = 60;
 export const HOUR_SECS = 60 * MIN_SECS;
@@ -7,6 +8,17 @@ export const DAY_SECS = 24 * HOUR_SECS;
 
 export function plural(word:string, quantity:number) {
   return `${word}${quantity !== 1 ? 's' : ''}`;
+}
+
+const USER_OR_STATUS_RGX = /(https?:\/\/[a-zA-Z0-9-\.]+)\/(@\w+)(.*)/;
+export function rewriteUrlFromOurInstance(url:string) :string {
+  const ourInstance = getBaseUrl();
+  const m = USER_OR_STATUS_RGX.exec(url);
+  if (!m) return url;
+  const [_, instance, user, suffix] = m;
+  if (instance === ourInstance) return url;
+  const instanceWithoutProtocol = instance.split('/').pop();
+  return `${ourInstance}/${user}@${instanceWithoutProtocol}${suffix}`;
 }
 
 export function humanDate(dateS:string) {
@@ -31,11 +43,11 @@ export function deltaT(dateS:string, lang:string, now:number=Date.now()) {
 }
 
 export function removeURLs(s:string) {
-  return s.replace(/https?:\/\/[\n\S]+/g, '');
+  return s.replace(/https?:\/\/\S+/g, '');
 }
 
 export function anchorURLs(s:string) {
-  return s.replace(/(https?:\/\/[\n\S]+)/g, '<a href="$1" target="_blank">$1</a>');
+  return s.replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank">$1</a>');
 }
 
 export function removeHashes(s:string) {

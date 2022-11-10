@@ -1,25 +1,25 @@
 import { i18n } from "./i18n";
-import { deltaT, humanDate, isTextInPt, removeEmojis, withoutHtml } from "./tools";
+import { deltaT, humanDate, isTextInPt, removeEmojis, withoutHtml, rewriteUrlFromOurInstance } from "./tools";
 
 export function accountTerm(_acc: Entity.Account | Entity.Mention) {
     if ('avatar_static' in _acc) {
         const acc = _acc as Entity.Account;
-        return `${acc.display_name} (${acc.acct}) ${acc.avatar_static}`;
+        return `${acc.display_name} (${rewriteUrlFromOurInstance(acc.url)}) ${acc.avatar_static}`;
     }
     const acc = _acc as Entity.Mention;
-    return `${acc.acct} (${acc.url})`;
+    return `${acc.acct} (${rewriteUrlFromOurInstance(acc.url)})`;
 }
 
 export function accountHTML(_acc: Entity.Account | Entity.Mention) {
     if ('avatar_static' in _acc) {
         const acc = _acc as Entity.Account;
-        return `<a href="${acc.url}" target="_blank">
+        return `<a href="${rewriteUrlFromOurInstance(acc.url)}" target="_blank">
 <img class="avatar" src="${acc.avatar_static}">
 ${acc.display_name} (${acc.acct})
 </a>`;
     }
     const acc = _acc as Entity.Mention;
-    return `<a href="${acc.url}" target="_blank">${acc.acct}</a>`;
+    return `<a href="${rewriteUrlFromOurInstance(acc.url)}" target="_blank">${acc.acct}</a>`;
 }
 
 export function accountReader(_acc: Entity.Account | Entity.Mention) {
@@ -62,7 +62,7 @@ export function tootTerm(status: Entity.Status) {
     const media2 = media.map(m => m.url).join('\n* ');
 
     return `-------
-${i('URL')}: ${core.url}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${status.created_at} (${deltaT(status.created_at, lang)})` : ''}
+${i('URL')}: ${rewriteUrlFromOurInstance(core.url)}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${status.created_at} (${deltaT(status.created_at, lang)})` : ''}
 ${i('from')}: ${accountTerm(acc)} ${i('at')} ${core.created_at} (${deltaT(core.created_at, lang)})
 ${i('content')}:\n${withoutHtml(content).trim()}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
 }
@@ -85,7 +85,7 @@ export function tootHTML(status: Entity.Status) {
 
     return `<div class="toot">
 <div class="header">
-${i('URL')}: <a href="${core.url}" target="_blank">${core.url}</a><br/>${status.reblog ? `\n${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})<br/>` : ''}
+${i('URL')}: <a href="${rewriteUrlFromOurInstance(core.url)}" target="_blank">${core.url}</a><br/>${status.reblog ? `\n${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})<br/>` : ''}
 ${i('from')}: ${accountHTML(acc)} ${i('at')} ${humanDate(core.created_at)} (${deltaT(core.created_at, lang)})
 </div>
 

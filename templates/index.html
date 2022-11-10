@@ -70,17 +70,17 @@
                     window.speechSynthesis.speak(utter);
 
                     return new Promise((resolve) => {
-                        function onKeyDown(ev) {
-                            if (ev.code !== 'Space') return;
+                        function onKeyUp(ev) {
+                            if (ev.code !== 'KeyN') return;
                             ev.preventDefault();
                             ev.stopPropagation();
                             onDone();
                         };
-                        document.addEventListener('keydown', onKeyDown);
+                        document.addEventListener('keyup', onKeyUp);
 
                         let timer;
                         function onDone() {
-                            document.removeEventListener('keydown', onKeyDown);
+                            document.removeEventListener('keyup', onKeyUp);
                             clearInterval(timer);
                             window.speechSynthesis.cancel();
                             resolve();
@@ -88,9 +88,7 @@
 
                         setTimeout(() => {
                             timer = setInterval( () => {
-                                if (!window.speechSynthesis.speaking) {
-                                    onDone();
-                                }
+                                if (!window.speechSynthesis.speaking) onDone();
                             }, 100);
                         }, 100);
                     });

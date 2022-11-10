@@ -16,14 +16,14 @@ const account:Entity.Account = {
     id: 'id',
     username: 'username',
     display_name: 'display_name',
-    acct: 'acct',
+    acct: 'username@instance.com',
     locked: false,
     created_at: new Date().toISOString(),
     followers_count: 1,
     following_count: 2,
     statuses_count: 3,
     note: 'note',
-    url: 'https://url.com',
+    url: 'https://instance.com/@username',
     avatar: 'https://avatar.com',
     avatar_static: 'https://avatar.static.com',
     header: 'https://header.com',
@@ -37,8 +37,8 @@ const account:Entity.Account = {
 const mention:Entity.Mention = {
     id: 'id',
     username: 'username',
-    url: 'https://url.com',
-    acct: 'acct'
+    url: 'https://instance.com/@username',
+    acct: 'username@instance.com'
 };
 
 const attachmentImage:Entity.Attachment = {
@@ -114,8 +114,8 @@ const attachmentUnknown:Entity.Attachment = {
 
 const toot1:Entity.Status = {
     id: 'id',
-    uri: 'https://uri.com',
-    url: 'https://url.com',
+    uri: 'https://instance.com/users/username/statuses/id',
+    url: 'https://instance.com/@username/id',
     account: account,
     in_reply_to_id: null,
     in_reply_to_account_id: null,
@@ -154,8 +154,8 @@ const toot1:Entity.Status = {
 
 const toot2:Entity.Status = {
     id: 'id',
-    uri: 'https://uri.com',
-    url: 'https://url.com',
+    uri: 'https://instance.com/users/username/statuses/id',
+    url: 'https://instance.com/@username/id',
     account: account,
     in_reply_to_id: null,
     in_reply_to_account_id: null,
@@ -194,16 +194,16 @@ test('accountReader', (_t) => {
 });
 
 test('accountTerm', (_t) => {
-    assert.equal(accountTerm(account), `display_name (acct) https://avatar.static.com`);
-    assert.equal(accountTerm(mention), `acct (https://url.com)`);
+    assert.equal(accountTerm(account), `display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com`);
+    assert.equal(accountTerm(mention), `username@instance.com (https://mastodon.social/@username@instance.com)`);
 });
 
 test('accountHTML', (_t) => {
-    assert.equal(accountHTML(account), `<a href="https://url.com" target="_blank">
+    assert.equal(accountHTML(account), `<a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
-display_name (acct)
+display_name (username@instance.com)
 </a>`);
-    assert.equal(accountHTML(mention), `<a href="https://url.com" target="_blank">acct</a>`);
+    assert.equal(accountHTML(mention), `<a href="https://mastodon.social/@username@instance.com" target="_blank">username@instance.com</a>`);
 });
 
 test('tootReader', (_t) => {
@@ -221,25 +221,25 @@ description`);
 
 test('tootTerm', (_t) => {
     assert.equal(tootTerm(toot1).replace(tsRgx, 'TIMESTAMP'), `-------
-URL: https://url.com
-from: display_name (acct) https://avatar.static.com at TIMESTAMP (now)
+URL: https://mastodon.social/@username@instance.com/id
+from: display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com at TIMESTAMP (now)
 content:
 hello world @guy #hash yay.
 mentions:
-* acct (https://url.com)
+* username@instance.com (https://mastodon.social/@username@instance.com)
 media:
 * https://attachment.com/image.jpg
 * https://attachment.com/video.mp4
 * https://attachment.com/audio.mp3
 `);
   assert.equal(tootTerm(toot2).replace(tsRgx, 'TIMESTAMP'), `-------
-URL: https://url.com
-boost by display_name (acct) https://avatar.static.com at TIMESTAMP (now)
-from: display_name (acct) https://avatar.static.com at TIMESTAMP (now)
+URL: https://mastodon.social/@username@instance.com/id
+boost by display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com at TIMESTAMP (now)
+from: display_name (https://mastodon.social/@username@instance.com) https://avatar.static.com at TIMESTAMP (now)
 content:
 hello world @guy #hash yay.
 mentions:
-* acct (https://url.com)
+* username@instance.com (https://mastodon.social/@username@instance.com)
 media:
 * https://attachment.com/image.jpg
 * https://attachment.com/video.mp4
@@ -250,17 +250,17 @@ media:
 test('tootHTML', (_t) => {
     assert.equal(tootHTML(toot1).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
 <div class="header">
-URL: <a href="https://url.com" target="_blank">https://url.com</a><br/>
-from: <a href="https://url.com" target="_blank">
+URL: <a href="https://mastodon.social/@username@instance.com/id" target="_blank">https://instance.com/@username/id</a><br/>
+from: <a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
-display_name (acct)
+display_name (username@instance.com)
 </a> at HUMAN_TIMESTAMP (now)
 </div>
 
 <div class="content">hello world @guy #hash yay.</div>
 
 mentions:
-<div class"mentions"><a href="https://url.com" target="_blank">acct</a></div>
+<div class"mentions"><a href="https://mastodon.social/@username@instance.com" target="_blank">username@instance.com</a></div>
 
 media:
 <div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>
@@ -275,21 +275,21 @@ description</div>
 </div>`);
 assert.equal(tootHTML(toot2).replace(humanTsRgx, 'HUMAN_TIMESTAMP'), `<div class="toot">
 <div class="header">
-URL: <a href="https://url.com" target="_blank">https://url.com</a><br/>
-boost by <a href="https://url.com" target="_blank">
+URL: <a href="https://mastodon.social/@username@instance.com/id" target="_blank">https://instance.com/@username/id</a><br/>
+boost by <a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
-display_name (acct)
+display_name (username@instance.com)
 </a> at HUMAN_TIMESTAMP (now)<br/>
-from: <a href="https://url.com" target="_blank">
+from: <a href="https://mastodon.social/@username@instance.com" target="_blank">
 <img class="avatar" src="https://avatar.static.com">
-display_name (acct)
+display_name (username@instance.com)
 </a> at HUMAN_TIMESTAMP (now)
 </div>
 
 <div class="content">hello world @guy #hash yay.</div>
 
 mentions:
-<div class"mentions"><a href="https://url.com" target="_blank">acct</a></div>
+<div class"mentions"><a href="https://mastodon.social/@username@instance.com" target="_blank">username@instance.com</a></div>
 
 media:
 <div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>
