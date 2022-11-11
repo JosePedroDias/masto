@@ -13,6 +13,7 @@ import { getHomeTimeline } from './masto';
 import { Persistence } from './persistence';
 import { tootHTML } from './templates';
 import { findOwnIPs } from './ip';
+import { i18n } from './i18n';
 
 const PORT = 3000;
 
@@ -31,13 +32,15 @@ export async function main(per:Persistence) {
     server.get('/', async (_req, rep) => {
         const toots = await getHomeTimeline(per);
 
-        let html = [];
+        let htmlItems = [];
         for (const st of toots) {
-            html.push(tootHTML(st));
+            htmlItems.push(tootHTML(st));
         }
 
+        const output = htmlItems.length === 0 ? i18n('no results', 'pt') : htmlItems.join('');
+
         rep.type('text/html');
-        rep.send(tpl.replace('_BODY_', html.join('')));
+        rep.send(tpl.replace('_BODY_', output));
     })
 
     const start = async () => {

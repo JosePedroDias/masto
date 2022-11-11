@@ -11,6 +11,7 @@ const lookup:{ [key:string] : {[key:string]: string } } = {
         media: 'media',
         mentions: 'menções',
         min: 'min',
+        'no results': 'sem resultados',
         now: 'agora',
         said: 'disse',
     },

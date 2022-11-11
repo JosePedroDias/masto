@@ -6,6 +6,7 @@ import { getHomeTimeline } from './masto';
 
 import { tootTerm } from './templates';
 import { Persistence } from './persistence';
+import { i18n } from './i18n';
 
 export async function main(per:Persistence) {
   const rl = createInterface({ input: stdin, output: stdout });
@@ -15,9 +16,15 @@ export async function main(per:Persistence) {
     const answer = await rl.question('> ');
     if (!answer) {
       const toots = await getHomeTimeline(per);
-      for (const st of toots) {
-        console.log(tootTerm(st));
+
+      if (toots.length) {
+        for (const st of toots) {
+          console.log(tootTerm(st));
+        }
+      } else {
+        console.log( i18n('no results', 'pt') );
       }
+      
     } else {
       console.log('leaving');
       keepGoing = false;
