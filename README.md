@@ -88,7 +88,6 @@ press enter to get another page, text and enter to leave
 
 ## TODO
 
-- fill in batch with more statuses after filtering out some?
 - allow filtering out replies
 - fix TTS for safari
 - add tests to check templates with CW and poll

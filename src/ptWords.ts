@@ -1,7 +1,11 @@
 export const ptWords = [
     'à',
     'às',
+    'adoro',
+    'adora',
     'agora',
+    //'ama',
+    'amo',
     'após',
     'aquela',
     'aquelas',

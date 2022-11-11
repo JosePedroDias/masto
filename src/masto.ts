@@ -1,4 +1,4 @@
-import { writeFile } from 'node:fs/promises';
+//import { writeFile } from 'node:fs/promises';
 import generator, { Entity, Mastodon } from 'megalodon';
 
 import { getBaseUrl, getAccessToken } from './config';
@@ -12,35 +12,68 @@ const client: Mastodon = generator.default(
     getAccessToken()
 );
 
-export async function getHomeTimeline(per:Persistence): Promise<Array<Entity.Status>> {
-    const toots = (await client.getHomeTimeline({
-        limit: per.limit,
-        min_id: per.min_id,
-        max_id: per.max_id, // going to the past
-        since_id: per.since_id // going to the future
-    }))
-    .data.filter((status:Entity.Status) => { // filter out statuses we've already visited (to avoid seeing multiple or any boost repetitions)
-        const core = status.reblog || status;
-        const wasInCache = isInCache(core.url);
-        if (!wasInCache) memorize(core.url);
-        else console.log(`filtering out previously read toot: ${core.url}`);
-        return !wasInCache;
-    });
+//const log = (...args:any) => console.log(...args);
+const log = (...args:any) =>{};
 
-    toots.reverse(); // get them sorted from older to newer
+export async function getHomeTimeline(per:Persistence): Promise<Entity.Status[]> {
+    let tootsBatch:Entity.Status[] = [];
+
+    let stepNo = 0;
+    do {
+        const _toots = (await client.getHomeTimeline({
+            limit: per.limit,
+            min_id: per.min_id,
+            max_id: per.max_id, // going to the past
+            since_id: per.since_id // going to the future
+        })).data;
+        _toots.reverse(); // get them sorted from older to newer
+
+        const toots = _toots.filter((status:Entity.Status) => {
+            // filter out statuses we've already visited (to avoid seeing multiple or any boost repetitions)
+            const core = status.reblog || status;
+            const wasInCache = isInCache(core.url);
+            if (!wasInCache) memorize(core.url);
+            else log(`filtering out previously read toot: ${core.url}`);
+            return !wasInCache;
+        });
+
+        log(`step #${stepNo} -> got ${_toots.length} (filtered ${_toots.length - toots.length})`);
+        
+        if (_toots.length === 0) {
+            log('we are up to date?');
+            break;
+        }
+        
+        tootsBatch = tootsBatch.concat(toots);
+
+        log(`batch size: ${tootsBatch.length}, limit: ${per.limit}`);
+
+        if (tootsBatch.length >= per.limit) {
+            if (tootsBatch.length > per.limit) {
+                // drop additional ones
+                tootsBatch.splice(per.limit, 100);
+            }
+            log('filled it');
+            break;
+        }
+
+        const lastId = _toots[_toots.length-1]?.id;
+        if (lastId) { per.min_id = lastId; per.max_id = undefined; } // READING NEWEST SINCE LAST READ
+
+        ++stepNo;
+    } while (true);
+
+    log(`returned ${tootsBatch.length}`);
+
+    //const firstId = tootsBatch[0]?.id;
+    const lastId = tootsBatch[tootsBatch.length-1]?.id;
+    //if (firstId) { per.max_id = firstId; per.min_id = undefined; } // READING NOW TO PAST WORKS!
+    if (lastId) { per.min_id = lastId; per.max_id = undefined; } // READING NEWEST SINCE LAST READ
 
     await saveCache();
-
-    const _toots = [...toots];
-    const _first = _toots.shift()?.id;
-    const _last = _toots.pop()?.id || _first;
-
-    //if (_first) { per.max_id = _first; per.min_id = undefined; } // READING NOW TO PAST WORKS!
-    if (_last) { per.min_id = _last; per.max_id = undefined; } // READING NEWEST SINCE LAST READ
-    // min_id max_id=109308584187095749
     await savePersistence(per);
 
-    writeFile('last_statuses.json', JSON.stringify(toots, null, 2));
+    //writeFile('last_statuses.json', JSON.stringify(tootsBatch, null, 2));
 
-    return toots;
+    return tootsBatch;
 }
