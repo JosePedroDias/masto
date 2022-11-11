@@ -91,48 +91,70 @@
         <div class="filler"></div>
 
         <script>
+            function stopSpeaking() {
+                if (window.safari) return; // ?
+                if (window.speechSynthesis.pending || window.speechSynthesis.speaking) {
+                    console.warn('cancelled');
+                    window.speechSynthesis.cancel();
+                }
+            }
+
+            function readText(text, lang) {
+                return new Promise((resolve) => {
+                    stopSpeaking();
+
+                    function onDone() {
+                        console.log('DONE');
+                        utter.removeEventListener('end', onDone);
+                        document.removeEventListener('keyup', onKeyUp);
+                        stopSpeaking();
+                        resolve();
+                    }
+
+                    function onKeyUp(ev) {
+                        if (ev.code !== 'KeyN') return;
+                        ev.preventDefault();
+                        ev.stopPropagation();
+                        onDone();
+                    };
+
+                    document.addEventListener('keyup', onKeyUp);
+
+                    const utter = new SpeechSynthesisUtterance(text);
+
+                    const voices = window.speechSynthesis.getVoices().filter((v) => v.lang.indexOf(lang) === 0);
+                    console.warn('voices', voices);
+                    const voice = voices[0];
+                    console.warn('voice', voice);
+                    utter.lang = voice.lang;
+
+                    /* utter.volume = 1;
+                    utter.pitch = 1;
+                    utter.rate = 1; */
+
+                    //utter.lang = lang;
+
+                    utter.addEventListener('boundary', (ev) => console.warn('boundary', (ev.charIndex / text.length).toFixed(2)));
+                    utter.addEventListener('end', onDone);
+                    utter.addEventListener('error', (err) => console.error(err));
+                    
+                    window.speechSynthesis.speak(utter);
+                });
+            }
+
             function readAll() {
                 const toots = Array.from(document.body.querySelectorAll('.toot'));
                 const chunks = Array.from(document.body.querySelectorAll('.read-text'))
                 .map((el, idx) => [el.innerHTML, el.getAttribute('lang'), idx]);
 
                 function highlight(index) {
-                    toots.forEach((toot, i) => {
-                        toot.classList.toggle('reading', i === index);
-                    });
+                    toots.forEach((toot, i) => toot.classList.toggle('reading', i === index));
                     toots[index].scrollIntoView();
                 }
 
                 function read(text, lang="en", idx) {
-                    const utter = new SpeechSynthesisUtterance(text);
-                    console.log(text, lang, idx);
                     highlight(idx);
-                    utter.lang = lang;
-                    window.speechSynthesis.speak(utter);
-
-                    return new Promise((resolve) => {
-                        function onKeyUp(ev) {
-                            if (ev.code !== 'KeyN') return;
-                            ev.preventDefault();
-                            ev.stopPropagation();
-                            onDone();
-                        };
-                        document.addEventListener('keyup', onKeyUp);
-
-                        let timer;
-                        function onDone() {
-                            document.removeEventListener('keyup', onKeyUp);
-                            clearInterval(timer);
-                            window.speechSynthesis.cancel();
-                            resolve();
-                        }
-
-                        setTimeout(() => {
-                            timer = setInterval( () => {
-                                if (!window.speechSynthesis.speaking) onDone();
-                            }, 100);
-                        }, 100);
-                    });
+                    return readText(text, lang);
                 }
 
                 chunks.reduce(
@@ -141,8 +163,14 @@
                 );
             }
             
-            readAll();
-            window.readAll = readAll;
+            if (window.chrome) {
+                window.speechSynthesis.addEventListener('voiceschanged', (ev) => {
+                    document.body.addEventListener('mousedown', readAll, { once: true }); // needs user event
+                });
+            } else {
+                readAll();
+            }
+
         </script>
     </body>
 </html>
