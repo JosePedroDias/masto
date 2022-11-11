@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/static": "^6.5.0",
     "dotenv": "^16.0.3",
     "fastify": "^4.9.2",
     "megalodon": "^4.1.0",

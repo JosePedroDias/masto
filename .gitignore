@@ -3,3 +3,4 @@ dist
 node_modules
 SENSITIVE.txt
 *.json
+.DS_Store

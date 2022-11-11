@@ -114,8 +114,8 @@ ${i('from')}: ${accountHTML(acc)} ${i('at')} ${humanDate(core.created_at)} (${de
 </div>
 
 ${cw ? `<div class="cw">${cw}</div>\n` : ''}<div class="content">${withoutHtml(content, 'anchor').trim()}${poll ? `\n${poll}`: ''}</div>
-${mentions.length ? `\n${i('mentions')}:\n<div class"mentions">${mentions2}</div>` : ''}
-${media.length ? `\n${i('media')}:\n<div class="medias">${media2}</div>\n` : ''}
+${mentions.length ? `\n<div class="mentions">${i('mentions')}:<br/>\n${mentions2}</div>` : ''}
+${media.length ? `\n<div class="media">${i('media')}:<br/>\n${media2}</div>\n` : ''}
 <div class="read-text" lang="${lang}">${tootReader(status)}</div>
 </div>`;
 }

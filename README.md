@@ -104,3 +104,13 @@ press enter to get another page, text and enter to leave
 - https://nodejs.org/docs/latest-v18.x/api/test.html#test_running_tests_from_the_command_line
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 
+
+## CREDITS
+
+- https://uxwing.com/barrier-icon/
+- https://uxwing.com/online-survey-icon/
+- https://uxwing.com/answer-icon/
+- https://uxwing.com/new-product-icon/
+- https://uxwing.com/coffee-icon/
+- https://uxwing.com/sharing-icon/
+- https://uxwing.com/pictures-icon/

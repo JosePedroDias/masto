@@ -1,5 +1,10 @@
 import Fastify from 'fastify';
 import { readFile } from 'node:fs/promises';
+import fStatic from '@fastify/static';
+
+import { fileURLToPath } from 'url';
+import { join } from 'path';
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 import { getHomeTimeline } from './masto';
 //import { getHomeTimeline } from './mocked-masto';
@@ -13,6 +18,13 @@ export async function main(per:Persistence) {
     const tpl = (await readFile('./templates/index.html')).toString();
 
     const server = Fastify({});
+
+    console.log(__dirname);
+
+    server.register(fStatic, {
+        root: join(__dirname, '..', 'public'),
+        prefix: '/public/',
+    });
 
     server.get('/', async (_req, rep) => {
         const toots = await getHomeTimeline(per);

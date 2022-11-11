@@ -2,8 +2,10 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-        <title>mastodon</title>
+
+        <link rel="icon" href="./public/icons/coffee-icon.svg" type="image/svg+xml">
+
+        <title>mastodon client</title>
 
         <style>
             html {
@@ -23,10 +25,41 @@
                 padding: 5px;
                 border: 3px solid rgb(85, 23, 108);
                 border-radius: 10px;
+                position: relative;
+            }
+
+            .toot::before {
+                position: absolute;
+                pointer-events: none;
+                content: "";
+                background-repeat: no-repeat;
+                background-size: 80px;
+                background-position: 100% 100%;
+                top: 0;
+                left: 0;
+                right: 10px;
+                bottom: 10px;
+                opacity: 0.2;
+            }
+
+            .toot.reply-no::before {
+                background-image: url('./public/icons/new-product-icon.svg');
+            }
+
+            .toot.reply-yes::before {
+                background-image: url('./public/icons/answer-icon.svg');
+            }
+
+            .toot.poll-yes::before {
+                background-image: url('./public/icons/online-survey-icon.svg');
+            }
+
+            .toot.cw-yes::before {
+                background-image: url('./public/icons/barrier-icon.svg');
             }
 
             .toot:nth-child(odd) {
-                background: #EEE;
+                background-color: #EEE;
             }
 
             .toot.reading {
@@ -66,6 +99,33 @@
                 font-size: 23px;
                 line-height: 40px;
                 padding: 10px;
+            }
+
+            .toot .mentions,
+            .toot .media {
+                position: relative;
+                padding-left: 36px;
+                min-height: 30px;
+            }
+
+            .toot .mentions::before,
+            .toot .media::before {
+                position: absolute;
+                pointer-events: none;
+                left: 2px;
+                content: "";
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                width: 30px;
+                height: 30px;
+            }
+
+            .toot .mentions::before {
+                background-image: url('./public/icons/sharing-icon.svg');
+            }
+
+            .toot .media::before {
+                background-image: url('./public/icons/pictures-icon.svg');
             }
 
             .avatar {
