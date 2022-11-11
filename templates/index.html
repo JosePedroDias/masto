@@ -192,10 +192,7 @@
 
                     progressEl.classList.remove('hidden');
 
-                    console.warn(`${lang}:`, text);
-
                     function onDone() {
-                        //console.log('DONE');
                         progressEl.classList.add('hidden');
                         utter.removeEventListener('end', onDone);
                         document.removeEventListener('keyup', onKeyUp);
@@ -215,6 +212,7 @@
                     const utter = new SpeechSynthesisUtterance(text);
 
                     const allVoices = window.speechSynthesis.getVoices();
+                    //console.warn('allVoices', allVoices);
                     let voices = allVoices.filter((v) => v.lang.indexOf(lang) === 0);
                     //console.warn('# voices', voices.length);
 
@@ -224,15 +222,8 @@
                     }
 
                     const voice = voices[0];
-                    //console.warn('voice', voice);
                     utter.lang = voice.lang;
-
-                    /* utter.volume = 1;
-                    utter.pitch = 1;
-                    utter.rate = 1; */
-
-                    //utter.lang = lang;
-
+                    
                     utter.addEventListener('boundary', (ev) => {
                         const r = (100 * ev.charIndex / text.length).toFixed(1);
                         progressBarEl.style.height = `${r}%`;
@@ -241,6 +232,7 @@
                     utter.addEventListener('error', (err) => console.error(err)); // for debugging
                     
                     window.speechSynthesis.speak(utter);
+                    console.warn(`(using ${utter.lang} in TTS to read ${lang})\n`, text);
                 });
             }
 
@@ -269,6 +261,7 @@
                 window.speechSynthesis.addEventListener('voiceschanged', (ev) => {
                     console.log('voiceschanged');
                     document.body.addEventListener('mousedown', readAll, { once: true }); // needs user event
+                    document.body.addEventListener('touchstart', readAll, { once: true });
                 });
             } else {
                 readAll();

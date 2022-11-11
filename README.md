@@ -8,7 +8,7 @@
 - shows your home timeline in a page of 4
 - records reading position, ie, you will remove on the next page
 - caches seen toots/statuses for the last 3 days and filters their boosts
-- has simple text to speech feature. to skip to next toot press `N`
+- has simple text to speech feature. (you need to click/touch the page in chrome for it to start). to skip to next toot press `N`
 - ad hoc language detection of portuguese, falling back to english \*
 - rewrites user and status URLs from instance/@person to ourInstance/@person@instance \*\*
 - displays poll options
@@ -88,10 +88,11 @@ press enter to get another page, text and enter to leave
 
 ## TODO
 
-- fix bug in TTS skipping when not in firefox (work in progress, chrome works after a mouse event, safari doesn't yet work)
+- fill in batch with more statuses after filtering out some?
+- allow filtering out replies
+- fix TTS for safari
 - add tests to check templates with CW and poll
 - add colors to repl version
-- fill in batch with more statuses after filtering out some?
 - wrap URLs with their metadata? - https://github.com/jshemas/openGraphScraper
 - fall back to languages other than english and portuguese? which criteria?
 
