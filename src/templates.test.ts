@@ -256,11 +256,11 @@ display_name (username@instance.com)
 
 <div class="content">hello world @guy #hash yay.</div>
 
-mentions:
-<div class"mentions"><a href="https://mastodon.social/@username@instance.com" target="_blank">username@instance.com</a></div>
+<div class="mentions">mentions:<br/>
+<a href="https://mastodon.social/@username@instance.com" target="_blank">username@instance.com</a></div>
 
-media:
-<div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>
+<div class="media">media:<br/>
+<a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>
 <video controls poster="https://attachment.com/poster.png" src="https://attachment.com/video.mp4"></video>
 <audio controls src="https://attachment.com/audio.mp3"></audio></div>
 
@@ -285,11 +285,11 @@ display_name (username@instance.com)
 
 <div class="content">hello world @guy #hash yay.</div>
 
-mentions:
-<div class"mentions"><a href="https://mastodon.social/@username@instance.com" target="_blank">username@instance.com</a></div>
+<div class="mentions">mentions:<br/>
+<a href="https://mastodon.social/@username@instance.com" target="_blank">username@instance.com</a></div>
 
-media:
-<div class="medias"><a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>
+<div class="media">media:<br/>
+<a href="https://attachment.com/image.jpg" target="_blank"><img class="media-image" alt="description" src="https://attachment.com/preview.jpg"></a>
 <video controls poster="https://attachment.com/poster.png" src="https://attachment.com/video.mp4"></video>
 <audio controls src="https://attachment.com/audio.mp3"></audio></div>
 
