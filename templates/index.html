@@ -122,8 +122,15 @@
 
                     const utter = new SpeechSynthesisUtterance(text);
 
-                    const voices = window.speechSynthesis.getVoices().filter((v) => v.lang.indexOf(lang) === 0);
-                    console.warn('voices', voices);
+                    const allVoices = window.speechSynthesis.getVoices();
+                    let voices = allVoices.filter((v) => v.lang.indexOf(lang) === 0);
+                    console.warn('# voices', voices.length);
+
+                    if (voices.length === 0) {
+                        console.log(`could not find a voice for ${lang}. using en...`);
+                        voices = allVoices.filter((v) => v.lang.indexOf('en') === 0);
+                    }
+
                     const voice = voices[0];
                     console.warn('voice', voice);
                     utter.lang = voice.lang;
@@ -134,9 +141,9 @@
 
                     //utter.lang = lang;
 
-                    utter.addEventListener('boundary', (ev) => console.warn('boundary', (ev.charIndex / text.length).toFixed(2)));
+                    //utter.addEventListener('boundary', (ev) => console.warn('boundary', (ev.charIndex / text.length).toFixed(2)));
                     utter.addEventListener('end', onDone);
-                    utter.addEventListener('error', (err) => console.error(err));
+                    utter.addEventListener('error', (err) => console.error(err)); // for debugging
                     
                     window.speechSynthesis.speak(utter);
                 });
@@ -165,6 +172,7 @@
             
             if (window.chrome) {
                 window.speechSynthesis.addEventListener('voiceschanged', (ev) => {
+                    console.log('voiceschanged');
                     document.body.addEventListener('mousedown', readAll, { once: true }); // needs user event
                 });
             } else {
