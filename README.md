@@ -88,7 +88,7 @@ press enter to get another page, text and enter to leave
 
 ## TODO
 
-- fix bug in TTS skipping when not in firefox
+- fix bug in TTS skipping when not in firefox (work in progress, chrome works after a mouse event, safari doesn't yet work)
 - add tests to check templates with CW and poll
 - add colors to repl version
 - fill in batch with more statuses after filtering out some?

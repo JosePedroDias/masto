@@ -27,14 +27,16 @@ export async function load() {
   try {
     const now = getNowSecs();
     const o:HashOfNumbers = JSON.parse( (await readFile(CACHE)).toString() );
+    let expiredCount = 0;
     for (let [k, v] of Object.entries(o)) {
         if (now - v > CACHE_TTL_SECS) {
-            console.log(`toot URL ${k} cache expired. removing it from cache.`);
+            ++expiredCount;
+            //console.log(`toot URL ${k} cache expired. removing it from cache.`);
         } else {
             cache.set(k, v);
         }
     }
-    console.log(`loaded ${cache.size} toot URLs from cache.`);
+    console.log(`loaded ${cache.size} toot URLs from cache.${expiredCount ? ` deleted ${expiredCount} expired URLs` : ''}`);
   } catch(_) {
     console.log('Problem loading the cache! Starting anew');
   }
