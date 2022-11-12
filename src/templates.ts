@@ -1,5 +1,10 @@
-import { i18n } from "./i18n";
-import { deltaT, humanDate, isTextInPt, removeEmojis, withoutHtml, rewriteUrlFromOurInstance } from "./tools";
+import { i18n } from './i18n';
+import { deltaT, humanDate, isTextInPt, removeEmojis, withoutHtml, rewriteUrlFromOurInstance } from './tools';
+import { Chalk } from 'chalk';
+
+const chalk = new Chalk({
+    //level: 0 // uncomment to remove terminal colors
+});
 
 function toYN(b:boolean) {
     return b ? 'yes' : 'no';
@@ -8,10 +13,10 @@ function toYN(b:boolean) {
 export function accountTerm(_acc: Entity.Account | Entity.Mention) {
     if ('avatar_static' in _acc) {
         const acc = _acc as Entity.Account;
-        return `${acc.display_name} (${rewriteUrlFromOurInstance(acc.url)})`;
+        return chalk.yellow(`${acc.display_name} (${chalk.underline(rewriteUrlFromOurInstance(acc.url))})`);
     }
     const acc = _acc as Entity.Mention;
-    return `${acc.acct} (${rewriteUrlFromOurInstance(acc.url)})`;
+    return chalk.yellow(`${acc.acct} (${chalk.underline(rewriteUrlFromOurInstance(acc.url))})`);
 }
 
 export function accountHTML(_acc: Entity.Account | Entity.Mention) {
@@ -78,11 +83,11 @@ export function tootTerm(status: Entity.Status) {
 
     const cw = core.sensitive ? (core.spoiler_text || i('content warning')) : '';
 
-    return `-------
-${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})` : ''}
+    return `${chalk.rgb(0, 0, 255).bold(`\n==============\n`)}
+${chalk.underline(rewriteUrlFromOurInstance(core.url, `/${core.id}`))}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})` : ''}
 ${i('from')}: ${accountTerm(acc)} ${i('at')} ${humanDate(core.created_at)} (${deltaT(core.created_at, lang)})
 
-${cw ? `** ${cw} **\n` : ''}${withoutHtml(content).trim()}${poll ? `\n${poll}` : ''}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
+${cw ? chalk.rgb(255, 0, 0).bold(`** ${cw} **\n`) : ''}${chalk.white(withoutHtml(content).trim())}${poll ? `\n${poll}` : ''}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
 }
 
 export function tootHTML(status: Entity.Status) {

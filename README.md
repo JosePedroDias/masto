@@ -5,17 +5,18 @@
 
 ## Features
 
-- shows your home timeline in a page of 4
+- shows your home timeline in pages of 4
 - records reading position, ie, you will remove on the next page
 - caches seen toots/statuses for the last 3 days and filters their boosts
+- rewrites user and status URLs from instance/@person to ourInstance/@person@instance \*
 - has simple text to speech feature. (you need to click/touch the page in chrome for it to start). to skip to next toot press `N`
-- ad hoc language detection of portuguese, falling back to english \*
-- rewrites user and status URLs from instance/@person to ourInstance/@person@instance \*\*
+- also displays colored toots and reads them in terminal
 - displays poll options
 - displays content warnings (opened)
+- ad hoc language detection of portuguese, falling back to english \*\*
 
-\* - many people fill the language field incorrectly  
-\*\* - super useful. if you follow the link you'll be able to act on the user or toot directly without logging in
+\* - super useful. if you follow the link you'll be able to act on the user or toot directly without logging in
+\*\* - many people fill the language field incorrectly (can be reset by editing tootLang in templates.ts)  
 
 
 ## A screenshot
@@ -91,7 +92,6 @@ press enter to get another page, text and enter to leave
 - allow filtering out replies
 - fix TTS for safari
 - add tests to check templates with CW and poll
-- add colors to repl version
 - wrap URLs with their metadata? - https://github.com/jshemas/openGraphScraper
 - fall back to languages other than english and portuguese? which criteria?
 
@@ -104,7 +104,7 @@ press enter to get another page, text and enter to leave
 - https://codepen.io/matt-west/pen/DpmMgE
 - https://nodejs.org/docs/latest-v18.x/api/test.html#test_running_tests_from_the_command_line
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
-
+- https://github.com/chalk/chalk
 
 ## CREDITS
 
