@@ -101,6 +101,7 @@ press enter to get another page, text and enter to leave
 - https://h3poteto.github.io/megalodon/index.html
 - https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis
 - https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
+- https://codepen.io/matt-west/pen/DpmMgE
 - https://nodejs.org/docs/latest-v18.x/api/test.html#test_running_tests_from_the_command_line
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 

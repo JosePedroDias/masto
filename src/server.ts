@@ -29,6 +29,12 @@ export async function main(per:Persistence) {
         prefix: '/public/',
     });
 
+    server.register(fStatic, {
+        root: join(__dirname, '..', 'dist-client'),
+        prefix: '/js/',
+        decorateReply: false
+    });
+
     server.get('/', async (_req, rep) => {
         const toots = await getHomeTimeline(per);
 

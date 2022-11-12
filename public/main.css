@@ -1,0 +1,156 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #333;
+}
+
+.toot {
+    margin-bottom: 5px;
+    padding: 5px;
+    border: 3px solid rgb(85, 23, 108);
+    border-radius: 10px;
+    position: relative;
+}
+
+.toot::before {
+    position: absolute;
+    pointer-events: none;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 80px;
+    background-position: 100% 100%;
+    top: 0;
+    left: 0;
+    right: 10px;
+    bottom: 10px;
+    opacity: 0.2;
+}
+
+.toot.reply-no::before {
+    background-image: url('./icons/new-product-icon.svg');
+}
+
+.toot.reply-yes::before {
+    background-image: url('./icons/answer-icon.svg');
+}
+
+.toot.poll-yes::before {
+    background-image: url('./icons/online-survey-icon.svg');
+}
+
+.toot.cw-yes::before {
+    background-image: url('./icons/barrier-icon.svg');
+}
+
+.toot:nth-child(odd) {
+    background-color: #EEE;
+}
+
+.toot.reading {
+    border: 3px solid rgb(191, 255, 0);
+}
+
+.toot .header {
+    font-family: monospace;
+    min-height: 100px;
+    font-size: 14px;
+    line-height: 22px;
+    background-color: rgba(85, 23, 108, 0.1);
+}
+
+.toot.reading .header {
+    background-color: rgba(191, 255, 0, 0.1);
+}
+
+.toot .header img {
+    float: left;
+    border: 2px solid transparent;
+    border-radius: 6px;
+}
+
+.toot .cw {
+    background-color: rgb(111, 39, 39);
+    color: white;
+    font-weight: 600;
+    padding: 8px;
+}
+
+.toot .poll {
+    font-style: italic;
+}
+
+.toot .content {
+    font-size: 23px;
+    line-height: 40px;
+    padding: 10px;
+}
+
+.toot .mentions,
+.toot .media {
+    position: relative;
+    padding-left: 36px;
+    min-height: 30px;
+}
+
+.toot .mentions::before,
+.toot .media::before {
+    position: absolute;
+    pointer-events: none;
+    left: 2px;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 30px;
+    height: 30px;
+}
+
+.toot .mentions::before {
+    background-image: url('./icons/sharing-icon.svg');
+}
+
+.toot .media::before {
+    background-image: url('./icons/pictures-icon.svg');
+}
+
+.avatar {
+    max-height: 50px;
+}
+
+.media-image {
+    max-height: 400px;
+}
+
+.read-text {
+    display: none;
+}
+
+.filler {
+    height: 100vh;
+}
+
+.progress {
+    border: 2px solid rgb(0, 100, 128);
+    border-radius: 8px;
+    position: fixed;
+    width: 12px;
+    height: 98vh;
+    z-index: 1;
+    opacity: 0.75;
+    pointer-events: none;
+}
+
+.progress.hidden {
+    display: none;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: rgb(0, 100, 128);
+    border-radius: 4px;
+}

@@ -3,9 +3,7 @@
         "target": "ESNext",
         "useDefineForClassFields": true,
         "module": "ESNext",
-        "lib": [
-            "ESNext"
-        ],
+        "lib": ["ESNext", "DOM"],
         "moduleResolution": "Node",
         "strict": true,
         "sourceMap": true,
@@ -20,5 +18,9 @@
     },
     "include": [
         "src/**/*.ts"
+    ],
+    "exclude": [
+        "src/tts-browser.ts",
+        "src/main-client.ts",
     ]
 }

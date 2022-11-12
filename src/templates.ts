@@ -52,10 +52,16 @@ export function mediaHTML(m:Entity.Attachment) {
     return `UNSUPPORTED? ${url}`;
 }
 
+export function tootLang(status: Entity.Status) {
+    const core = status.reblog || status;
+    //return core.language || 'en';
+    return isTextInPt(withoutHtml(core.content, true)) ? 'pt' : 'en';
+}
+
 export function tootTerm(status: Entity.Status) {
     const core = status.reblog || status;
     const acc = core.account;
-    const lang = core.language || status.language || '';
+    const lang = tootLang(status);
     const i = (k:string) => i18n(k, lang);
 
     const content = core.content;
@@ -84,8 +90,7 @@ export function tootHTML(status: Entity.Status) {
     const acc = core.account;
     const content = core.content;
     
-    const lang = isTextInPt(withoutHtml(content, true)) ? 'pt' : 'en';
-    //const lang = core.language || status.language || '';
+    const lang = tootLang(status);
 
     const i = (k:string) => i18n(k, lang);
     
@@ -134,8 +139,7 @@ export function tootReader(status: Entity.Status) {
 
     const cw = core.sensitive ? (core.spoiler_text || i('content warning')) : '';
 
-    const lang = isTextInPt(withoutHtml(content, true)) ? 'pt' : 'en';
-    //const lang = core.language || status.language || '';
+    const lang = tootLang(status);
 
     const media = core.media_attachments;
     const mediaS = media.map(m => withoutHtml(m.description || "", true).trim()).join('\n');

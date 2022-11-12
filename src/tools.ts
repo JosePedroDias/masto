@@ -98,3 +98,9 @@ export function isTextInPt(s:string) {
   //console.log(count);
   return count > 0;
 }
+
+export function sleep(ms:number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
