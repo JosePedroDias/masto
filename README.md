@@ -90,10 +90,8 @@ press enter to get another page, text and enter to leave
 ## TODO
 
 - allow filtering out replies
-- fix TTS for safari
 - add tests to check templates with CW and poll
 - wrap URLs with their metadata? - https://github.com/jshemas/openGraphScraper
-- fall back to languages other than english and portuguese? which criteria?
 
 
 ## REFERENCE

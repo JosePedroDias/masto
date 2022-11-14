@@ -57,10 +57,12 @@ export function mediaHTML(m:Entity.Attachment) {
     return `UNSUPPORTED? ${url}`;
 }
 
-export function tootLang(status: Entity.Status) {
+export function tootLang(status: Entity.Status):string {
     const core = status.reblog || status;
-    //return core.language || 'en';
-    return isTextInPt(withoutHtml(core.content, true)) ? 'pt' : 'en';
+    const content = withoutHtml(core.content, true);
+    const taggedLanguage = core.language || 'en';
+    const wasDetectedPt = isTextInPt(content);
+    return wasDetectedPt ? 'pt' : taggedLanguage;
 }
 
 export function tootTerm(status: Entity.Status) {

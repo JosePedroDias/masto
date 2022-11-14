@@ -217,7 +217,7 @@ description`);
 });
 
 test('tootTerm', (_t) => {
-    assert.equal(tootTerm(toot1).replace(humanTsRgx, 'TS'), `-------
+    assert.equal(tootTerm(toot1).replace(humanTsRgx, 'TS'), `\n==============\n
 https://mastodon.social/@username@instance.com/localId
 from: display_name (https://mastodon.social/@username@instance.com) at TS (now)
 
@@ -229,7 +229,7 @@ media:
 * https://attachment.com/video.mp4
 * https://attachment.com/audio.mp3
 `);
-  assert.equal(tootTerm(toot2).replace(humanTsRgx, 'TS'), `-------
+  assert.equal(tootTerm(toot2).replace(humanTsRgx, 'TS'), `\n==============\n
 https://mastodon.social/@username@instance.com/localId
 boost by display_name (https://mastodon.social/@username@instance.com) at TS (now)
 from: display_name (https://mastodon.social/@username@instance.com) at TS (now)

@@ -47,15 +47,16 @@ function readAll() {
 }
 
 if (progressBarEl && progressEl) {
+    const onHumanEvent = () => {
+        setup().then(readAll);
+    }
+
     // @ts-ignore
-    if (window.chrome || window.safari) { // TODO safari still not working
-        const onHumanEvent = () => {
-            setup().then(readAll);
-        }
+    if (window.chrome || window.safari) {
         document.body.addEventListener('mousedown', onHumanEvent, { once: true });
         document.body.addEventListener('touchstart', onHumanEvent, { once: true });
     }
     else {
-        readAll();
+        onHumanEvent();
     }
 }
