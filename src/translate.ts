@@ -4,12 +4,12 @@ export function translate(content:string, sourceLang:string, targetLang:string =
     return new Promise((resolve, reject) => {
         const proc = spawn(
             `argos-translate`,
-            [`--from-lang`, sourceLang, `--to-lang`, targetLang, `"${content}"`],
+            [`--from-lang`, sourceLang, `--to-lang`, targetLang, `${content}`],
             { cwd: process.cwd() }
         );
 
         proc.stdout.on('data', (data) => {
-            resolve(data.toString());
+            resolve(data.toString().trim());
             proc.kill();
         });
 
@@ -24,6 +24,8 @@ export function translate(content:string, sourceLang:string, targetLang:string =
     });
 }
 
+/*
 translate('tenho um gato sentado ao meu lado.', 'pt', 'en')
 .then((o) => console.log('ok', o))
 .catch((err) => console.error('error', err));
+*/

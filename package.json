@@ -23,10 +23,12 @@
     "dotenv": "^16.0.3",
     "fastify": "^4.9.2",
     "megalodon": "^4.1.0",
+    "open-graph-scraper": "^4.11.1",
     "say": "^0.16.0",
     "typescript": "^4.8.4"
   },
   "devDependencies": {
+    "@types/open-graph-scraper": "^4.8.2",
     "vite": "^3.2.3"
   }
 }
