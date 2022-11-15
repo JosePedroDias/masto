@@ -23,7 +23,7 @@ export async function main(per:Persistence) {
       if (toots.length) {
         for (const st of toots) {
           console.log(tootTerm(st));
-          await readText(tootReader(st), tootLang(st));
+          await readText(await tootReader(st), await tootLang(st));
         }
       } else {
         const text = i18n('no results', 'pt');

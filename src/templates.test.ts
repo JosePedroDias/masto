@@ -203,21 +203,21 @@ display_name (username@instance.com)
     assert.equal(accountHTML(mention), `<a href="https://mastodon.social/@username@instance.com" target="_blank">username@instance.com</a>`);
 });
 
-test('tootReader', (_t) => {
-    assert.equal(tootReader(toot1), `display_name said now ago:
+test('tootReader', async (_t) => {
+    assert.equal(await tootReader(toot1), `display_name said now ago:
 hello world  hash yay.
 description
 description
 description`);
-    assert.equal(tootReader(toot2), `display_name said now ago:
+    assert.equal(await tootReader(toot2), `display_name said now ago:
 hello world  hash yay.
 description
 description
 description`);
 });
 
-test('tootTerm', (_t) => {
-    assert.equal(tootTerm(toot1).replace(humanTsRgx, 'TS'), `\n==============\n
+test('tootTerm', async (_t) => {
+    assert.equal((await tootTerm(toot1)).replace(humanTsRgx, 'TS'), `\n==============\n
 https://mastodon.social/@username@instance.com/localId
 from: display_name (https://mastodon.social/@username@instance.com) at TS (now)
 
@@ -229,7 +229,7 @@ media:
 * https://attachment.com/video.mp4
 * https://attachment.com/audio.mp3
 `);
-  assert.equal(tootTerm(toot2).replace(humanTsRgx, 'TS'), `\n==============\n
+  assert.equal((await tootTerm(toot2)).replace(humanTsRgx, 'TS'), `\n==============\n
 https://mastodon.social/@username@instance.com/localId
 boost by display_name (https://mastodon.social/@username@instance.com) at TS (now)
 from: display_name (https://mastodon.social/@username@instance.com) at TS (now)
@@ -244,8 +244,8 @@ media:
 `);
 });
 
-test('tootHTML', (_t) => {
-    assert.equal(tootHTML(toot1).replace(humanTsRgx, 'TS'), `<div class="toot visibility-public reply-no poll-no cw-no">
+test('tootHTML', async (_t) => {
+    assert.equal((await tootHTML(toot1)).replace(humanTsRgx, 'TS'), `<div class="toot visibility-public reply-no poll-no cw-no">
 <div class="header">
 <a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
 from: <a href="https://mastodon.social/@username@instance.com" target="_blank">
@@ -270,7 +270,7 @@ description
 description
 description</div>
 </div>`);
-assert.equal(tootHTML(toot2).replace(humanTsRgx, 'TS'), `<div class="toot visibility-public reply-no poll-no cw-no">
+assert.equal((await tootHTML(toot2)).replace(humanTsRgx, 'TS'), `<div class="toot visibility-public reply-no poll-no cw-no">
 <div class="header">
 <a href="https://mastodon.social/@username@instance.com/localId" target="_blank">https://instance.com/@username/id</a><br/>
 boost by <a href="https://mastodon.social/@username@instance.com" target="_blank">

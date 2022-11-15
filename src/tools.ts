@@ -51,36 +51,43 @@ export function anchorURLs(s:string) {
   return s.replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank">$1</a>');
 }
 
+const TESTED_OG_TYPES = [
+  'article',
+  'book',
+  'music.song',
+  'video.other',
+  'website',
+];
+
 export async function mediaURLs(s:string) {
   const it = s.matchAll(/(https?:\/\/\S+)/g);
   const found:string[] = [];
   for (const m of it) {
     found.push(m[1]);
   }
-  //found.reverse();
-  //console.log(found);
 
   let s2 = s;
-
+  
   for (let url of found) {
     const md:any = await urlMetadata(url);
     let meta = url;
-    if (md.ogSiteName === 'Twitter') {
-      meta = `<b>${md.ogTitle}</b> - ${md.ogDescription}">`;
-    }
-    else if (md.ogType === 'video.other' || md.ogType === 'article' || md.ogSiteName === 'music.song') {
-      meta = `${md.ogTitle} <img src="${md.ogImage.url}">`;
-    }
-    else {
-      console.log(`using mediaURLs with ogSiteName:${md.ogSiteName} and ogType:${md.ogType}:`);
-      if (md.ogImage) {
-        meta = `${md.ogTitle} <img src="${md.ogImage.url}">`;
-      } else {
-        meta = md.ogTitle;
+    if (typeof md === 'object') {
+      if (md.ogSiteName === 'Twitter') {
+        meta = `<b>${md.ogTitle}</b> - <i>${md.ogDescription}</i>`;
+      }
+      else if (TESTED_OG_TYPES.includes(md.ogType)) {
+        meta = `${md.ogTitle}<br/><img src="${md.ogImage.url}">`;
+      }
+      else if (md.ogTitle) {
+        console.log(`using mediaURL with ogType:${md.ogType} in ogSiteName:${md.ogSiteName} from url:${url}`);
+        if (md.ogImage) {
+          meta = `${md.ogTitle}<br/><img src="${md.ogImage.url}">`;
+        } else {
+          meta = md.ogTitle;
+        }
       }
     }
-    const tpl = `<a class="meta" href="${url}" target="_blank">${meta}</a>`
-    s2 = s2.replace(url, tpl);
+    s2 = s2.replace(url, `<a class="meta" href="${url}" target="_blank">${meta}</a>`);
   }
 
   return s2;
@@ -102,7 +109,7 @@ export function removeEmojis(s:string) {
   
 }
 
-export function withoutHtml(s:string, noURLs:boolean|'anchor'|'media'=false) {
+export async function withoutHtml(s:string, noURLs:boolean|'anchor'|'media'=false) {
   let s2 = s
   .replace(/<\/p><p>/ig, '\n')
   .replace(/&nbsp;/g, ' ')
@@ -115,7 +122,7 @@ export function withoutHtml(s:string, noURLs:boolean|'anchor'|'media'=false) {
     s2 = anchorURLs(s2);
   }
   else if (noURLs === 'media') {
-    //s2 = mediaURLs(s2); TODO
+    s2 = await mediaURLs(s2);
   }
   else if (noURLs) {
     s2 = removeURLs(s2);

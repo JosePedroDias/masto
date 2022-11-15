@@ -57,18 +57,19 @@ export function mediaHTML(m:Entity.Attachment) {
     return `UNSUPPORTED? ${url}`;
 }
 
-export function tootLang(status: Entity.Status):string {
+export async function tootLang(status: Entity.Status):Promise<string> {
     const core = status.reblog || status;
-    const content = withoutHtml(core.content, true);
+    const content = await withoutHtml(core.content, true);
     const taggedLanguage = core.language || 'en';
     const wasDetectedPt = isTextInPt(content);
     return wasDetectedPt ? 'pt' : taggedLanguage;
 }
 
-export function tootTerm(status: Entity.Status) {
+export async function tootTerm(status: Entity.Status):Promise<string> {
     const core = status.reblog || status;
     const acc = core.account;
-    const lang = tootLang(status);
+
+    const lang = await tootLang(status);
     const i = (k:string) => i18n(k, lang);
 
     const content = core.content;
@@ -85,20 +86,21 @@ export function tootTerm(status: Entity.Status) {
 
     const cw = core.sensitive ? (core.spoiler_text || i('content warning')) : '';
 
+    const content2 = (await withoutHtml(content)).trim();
+
     return `${chalk.rgb(0, 0, 255).bold(`\n==============\n`)}
 ${chalk.underline(rewriteUrlFromOurInstance(core.url, `/${core.id}`))}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})` : ''}
 ${i('from')}: ${accountTerm(acc)} ${i('at')} ${humanDate(core.created_at)} (${deltaT(core.created_at, lang)})
 
-${cw ? chalk.rgb(255, 0, 0).bold(`** ${cw} **\n`) : ''}${chalk.white(withoutHtml(content).trim())}${poll ? `\n${poll}` : ''}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
+${cw ? chalk.rgb(255, 0, 0).bold(`** ${cw} **\n`) : ''}${chalk.white(content2)}${poll ? `\n${poll}` : ''}${mentions2 ? `\n${i('mentions')}:\n* ${mentions2}` : ''}${media2 ? `\n${i('media')}:\n* ${media2}\n` : ''}`;
 }
 
-export function tootHTML(status: Entity.Status) {
+export async function tootHTML(status: Entity.Status) {
     const core = status.reblog || status;
     const acc = core.account;
     const content = core.content;
     
-    const lang = tootLang(status);
-
+    const lang = await tootLang(status);
     const i = (k:string) => i18n(k, lang);
     
     const mentions = core.mentions;
@@ -119,24 +121,27 @@ export function tootHTML(status: Entity.Status) {
         poll = tmp.join('');
     }
 
+    const content2 = (await withoutHtml(content, 'media')).trim();
+
     return `<div class="toot visibility-${core.visibility} reply-${toYN(!!core.in_reply_to_account_id)} poll-${toYN(!!core.poll)} cw-${toYN(!!cw)}">
 <div class="header">
 <a href="${rewriteUrlFromOurInstance(core.url, `/${core.id}`)}" target="_blank">${core.url}</a><br/>${status.reblog ? `\n${i('boost')} ${i('by')} ${accountHTML(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})<br/>` : ''}
 ${i('from')}: ${accountHTML(acc)} ${i('at')} ${humanDate(core.created_at)} (${deltaT(core.created_at, lang)})
 </div>
 
-${cw ? `<div class="cw">${cw}</div>\n` : ''}<div class="content">${withoutHtml(content, 'anchor').trim()}${poll ? `\n${poll}`: ''}</div>
+${cw ? `<div class="cw">${cw}</div>\n` : ''}<div class="content">${content2}${poll ? `\n${poll}`: ''}</div>
 ${mentions.length ? `\n<div class="mentions">${i('mentions')}:<br/>\n${mentions2}</div>` : ''}
 ${media.length ? `\n<div class="media">${i('media')}:<br/>\n${media2}</div>\n` : ''}
-<div class="read-text" lang="${lang}">${tootReader(status)}</div>
+<div class="read-text" lang="${lang}">${await tootReader(status)}</div>
 </div>`;
 }
 
-export function tootReader(status: Entity.Status) {
+export async function tootReader(status: Entity.Status) {
     const core = status.reblog || status;
     const acc = core.account;
     const content = core.content;
 
+    const lang = await tootLang(status);
     const i = (k:string) => i18n(k, lang);
 
     let poll;
@@ -146,11 +151,15 @@ export function tootReader(status: Entity.Status) {
 
     const cw = core.sensitive ? (core.spoiler_text || i('content warning')) : '';
 
-    const lang = tootLang(status);
+    let medias = [];
+    for (let m of core.media_attachments) {
+        const m2 = (await withoutHtml(m.description || "", true)).trim();
+        medias.push(m2);
+    }
+    const mediaS = medias.join('\n');
 
-    const media = core.media_attachments;
-    const mediaS = media.map(m => withoutHtml(m.description || "", true).trim()).join('\n');
+    const content2 = (await withoutHtml(content, true)).trim();
 
     return `${accountReader(acc)} ${i('said')} ${deltaT(core.created_at, lang)} ${i('ago')}:
-${cw ? `${cw}\n` : ''}${withoutHtml(content, true).trim()}${poll ? `\n${poll}` : ''}${mediaS ? '\n' + mediaS :''}`;
+${cw ? `${cw}\n` : ''}${content2}${poll ? `\n${poll}` : ''}${mediaS ? '\n' + mediaS :''}`;
 }

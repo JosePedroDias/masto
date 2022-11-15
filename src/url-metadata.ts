@@ -14,10 +14,7 @@ export function urlMetadata(url:string) {
             (error, results, _response) => {
                 if (error) {
                     console.log(`error getting metadata for ${url}`);
-                    console.log(error);
-                    resolve(url);
-                    //reject(error);
-                    return;
+                    return resolve(url);
                 }
                 resolve(results);
             }

@@ -91,6 +91,18 @@ a {
     padding: 10px;
 }
 
+.toot .content .meta {
+    font-size: 75%;
+    display: inline-block;
+    padding: 5px;
+    background-color: lightblue;
+}
+
+.toot .content .meta img {
+    max-width: 25vw;
+    max-height: 25vh;
+}
+
 .toot .mentions,
 .toot .media {
     position: relative;
@@ -122,8 +134,10 @@ a {
     max-height: 50px;
 }
 
-.media-image {
-    max-height: 400px;
+.media-image,
+.media-video {
+    max-width: 50vw;
+    max-height: 50vh;
 }
 
 .read-text {

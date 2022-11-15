@@ -39,7 +39,7 @@ export async function main(per:Persistence) {
 
         let htmlItems = [];
         for (const st of toots) {
-            htmlItems.push(tootHTML(st));
+            htmlItems.push(await tootHTML(st));
         }
 
         const output = htmlItems.length === 0 ? i18n('no results', 'pt') : htmlItems.join('');
