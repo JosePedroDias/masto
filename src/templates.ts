@@ -107,7 +107,7 @@ export function tootHTML(status: Entity.Status) {
     const mentions2 = mentions.map(m => accountHTML(m)).join(', ');
     const media2 = media.map(m => mediaHTML(m)).join('\n');
 
-    const cw = core.sensitive ? (core.spoiler_text || i('content warning')) : '';
+    const cw = core.spoiler_text ? (core.spoiler_text || i('content warning')) : '';
 
     let poll;
     if (core.poll) {

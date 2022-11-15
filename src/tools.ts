@@ -1,6 +1,7 @@
 import { i18n } from './i18n';
 import { ptWords } from './ptWords';
 import { getBaseUrl } from './config';
+import { urlMetadata } from './url-metadata';
 
 export const MIN_SECS = 60;
 export const HOUR_SECS = 60 * MIN_SECS;
@@ -50,6 +51,41 @@ export function anchorURLs(s:string) {
   return s.replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank">$1</a>');
 }
 
+export async function mediaURLs(s:string) {
+  const it = s.matchAll(/(https?:\/\/\S+)/g);
+  const found:string[] = [];
+  for (const m of it) {
+    found.push(m[1]);
+  }
+  //found.reverse();
+  //console.log(found);
+
+  let s2 = s;
+
+  for (let url of found) {
+    const md:any = await urlMetadata(url);
+    let meta = url;
+    if (md.ogSiteName === 'Twitter') {
+      meta = `<b>${md.ogTitle}</b> - ${md.ogDescription}">`;
+    }
+    else if (md.ogType === 'video.other' || md.ogType === 'article' || md.ogSiteName === 'music.song') {
+      meta = `${md.ogTitle} <img src="${md.ogImage.url}">`;
+    }
+    else {
+      console.log(`using mediaURLs with ogSiteName:${md.ogSiteName} and ogType:${md.ogType}:`);
+      if (md.ogImage) {
+        meta = `${md.ogTitle} <img src="${md.ogImage.url}">`;
+      } else {
+        meta = md.ogTitle;
+      }
+    }
+    const tpl = `<a class="meta" href="${url}" target="_blank">${meta}</a>`
+    s2 = s2.replace(url, tpl);
+  }
+
+  return s2;
+}
+
 export function removeHashes(s:string) {
   return s.replace(/#(\w+)/g, '$1');
 }
@@ -66,7 +102,7 @@ export function removeEmojis(s:string) {
   
 }
 
-export function withoutHtml(s:string, noURLs:boolean|string=false) {
+export function withoutHtml(s:string, noURLs:boolean|'anchor'|'media'=false) {
   let s2 = s
   .replace(/<\/p><p>/ig, '\n')
   .replace(/&nbsp;/g, ' ')
@@ -77,6 +113,9 @@ export function withoutHtml(s:string, noURLs:boolean|string=false) {
 
   if (noURLs === 'anchor') {
     s2 = anchorURLs(s2);
+  }
+  else if (noURLs === 'media') {
+    //s2 = mediaURLs(s2); TODO
   }
   else if (noURLs) {
     s2 = removeURLs(s2);

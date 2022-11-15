@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { plural, humanDate, deltaT, removeURLs, anchorURLs, removeHashes, removeUsers, removeEmojis, withoutHtml, isTextInPt, rewriteUrlFromOurInstance, MIN_SECS, HOUR_SECS, DAY_SECS } from './tools';
+import { plural, humanDate, deltaT, removeURLs, anchorURLs, mediaURLs, removeHashes, removeUsers, removeEmojis, withoutHtml, isTextInPt, rewriteUrlFromOurInstance, MIN_SECS, HOUR_SECS, DAY_SECS } from './tools';
 
 test('plural', (_t) => {
     assert.equal(plural('cheese', 0), 'cheeses');
@@ -40,6 +40,23 @@ test('anchorURLs', (_t) => {
     assert.equal(
         anchorURLs(`before http://asd.com yeah https://things.com/asd?qwe=23&vd=true 123`),
         `before <a href="http://asd.com" target="_blank">http://asd.com</a> yeah <a href="https://things.com/asd?qwe=23&vd=true" target="_blank">https://things.com/asd?qwe=23&vd=true</a> 123`
+    );
+});
+
+test('mediaURLs', { only: true }, async (_t) => {
+    assert.equal(
+        await mediaURLs(`before
+https://twitter.com/KittyGiraudel/status/1588181435189690368
+sep
+https://open.spotify.com/track/78daXDfx7T89qorS0ktsU0
+bye`),
+`before
+<a class="meta" href="https://twitter.com/KittyGiraudel/status/1588181435189690368" target="_blank"><b>Kitty Giraudel on Twitter</b> - “I just remembered Slack supports sed-like syntax to edit a message. 🤯
+
+For instance: /s/great/amazing/ would replace the word “great” by “amazing” in the last message. 🔥”"></a>
+sep
+<a class="meta" href="https://open.spotify.com/track/78daXDfx7T89qorS0ktsU0" target="_blank">Everyone’s Got Something <img src="https://i.scdn.co/image/ab67616d0000b2739f19cdb07e588cc2c836ca29"></a>
+bye`
     );
 });
 

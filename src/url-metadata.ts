@@ -2,19 +2,31 @@
 
 import ogs from 'open-graph-scraper';
 
+const USER_AGENT = "Googlebot/2.1 (+http://www.google.com/bot.html)"; 
+
 export function urlMetadata(url:string) {
     return new Promise((resolve, reject) => {
-        ogs({ url }, (error, results, _response) => {
-            if (error) {
-                return reject(error);
+        ogs(
+            {
+                url,
+                headers: { 'user-agent': USER_AGENT }
+            },
+            (error, results, _response) => {
+                if (error) {
+                    console.log(`error getting metadata for ${url}`);
+                    console.log(error);
+                    resolve(url);
+                    //reject(error);
+                    return;
+                }
+                resolve(results);
             }
-            resolve(results);
-        });
+        );
     });
 }
 
 /*
-urlMetadata('https://www.theguardian.com/world/2022/nov/15/g20-russia-ukraine-war-global-economic-suffering')
+urlMetadata('https://twitter.com/KittyGiraudel/status/1588181435189690368')
 .then(o => console.log('ok', o))
 .catch(err => console.error('error', err));
 */
