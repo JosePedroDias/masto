@@ -7,7 +7,7 @@ import fStatic from '@fastify/static';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
-import { getHomeTimeline } from './masto';
+import { getHomeTimeline/*, search*/ } from './masto';
 //import { getHomeTimeline } from './mocked-masto';
 
 import { Persistence } from './persistence';
@@ -22,8 +22,6 @@ export async function main(per:Persistence) {
 
     const server = Fastify({});
 
-    console.log(__dirname);
-
     server.register(fStatic, {
         root: join(__dirname, '..', 'public'),
         prefix: '/public/',
@@ -37,6 +35,7 @@ export async function main(per:Persistence) {
 
     server.get('/', async (_req, rep) => {
         const toots = await getHomeTimeline(per);
+        //const toots = (await search('music', 'statuses')) as Entity.Status[];
 
         let htmlItems = [];
         for (const st of toots) {

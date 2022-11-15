@@ -1,4 +1,4 @@
-//import { writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import generator, { Entity, Mastodon } from 'megalodon';
 
 import { getBaseUrl, getAccessToken } from './config';
@@ -76,4 +76,21 @@ export async function getHomeTimeline(per:Persistence): Promise<Entity.Status[]>
     //writeFile('last_statuses.json', JSON.stringify(tootsBatch, null, 2));
 
     return tootsBatch;
+}
+
+export async function search(query:string, type: 'accounts'|'hashtags'|'statuses') { //Promise<Entity.Status[]> {
+    const results = (await client.search(query, type, { limit: 10 })).data;
+    console.log(results);
+    
+    if (type === 'accounts') {
+        writeFile('last_accounts.json', JSON.stringify(results.accounts, null, 2));
+        return results.accounts;
+    }
+    if (type === 'hashtags') {
+        writeFile('last_hashtags.json', JSON.stringify(results.hashtags, null, 2));
+        return results.hashtags;
+    }
+
+    writeFile('last_statuses.json', JSON.stringify(results.statuses, null, 2));
+    return results.statuses;
 }

@@ -92,7 +92,7 @@ press enter to get another page, text and enter to leave
 - allow filtering out replies
 - add tests to check templates with CW and poll
 - wrap URLs with their metadata? - https://github.com/jshemas/openGraphScraper
-- translate content - https://libretranslate.com/
+- translate content - https://libretranslate.com/ https://github.com/argosopentech/argos-translate/
 
 
 ## REFERENCE

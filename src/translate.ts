@@ -1,18 +1,29 @@
-
-// https://libretranslate.com/
+import { spawn } from 'node:child_process';
 
 export function translate(content:string, sourceLang:string, targetLang:string = 'en') {
-    return fetch('https://libretranslate.com/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            q: content,
-            source: sourceLang,
-            target: targetLang,
-            format: 'text',
-            api_key: ''
-        })
-    })
-    .then((res) => res.json())
-    .then((body) => body.translatedText);
+    return new Promise((resolve, reject) => {
+        const proc = spawn(
+            `argos-translate`,
+            [`--from-lang`, sourceLang, `--to-lang`, targetLang, `"${content}"`],
+            { cwd: process.cwd() }
+        );
+
+        proc.stdout.on('data', (data) => {
+            resolve(data.toString());
+            proc.kill();
+        });
+
+        proc.stderr.on('data', (data) => {
+            reject(data.toString());
+            proc.kill();
+        });
+
+        /* proc.on('exit', (code) => {
+            console.log(`Child process exited with exit code ${code}`);
+        }); */
+    });
 }
+
+translate('tenho um gato sentado ao meu lado.', 'pt', 'en')
+.then((o) => console.log('ok', o))
+.catch((err) => console.error('error', err));

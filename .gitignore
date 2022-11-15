@@ -5,5 +5,5 @@ dist-client
 node_modules
 SENSITIVE.txt
 cache.json
+last*.json
 persistence.json
-
