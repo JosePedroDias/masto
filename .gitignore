@@ -1,7 +1,9 @@
+.DS_Store
 .env
 dist
 dist-client
 node_modules
 SENSITIVE.txt
-*.json
-.DS_Store
+cache.json
+persistence.json
+

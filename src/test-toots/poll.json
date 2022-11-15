@@ -1,0 +1,93 @@
+{
+    "id": "109315556310564600",
+    "uri": "https://masto.pt/users/tarantelma/statuses/109315524710965554",
+    "url": "https://masto.pt/@tarantelma/109315524710965554",
+    "account": {
+        "id": "109274668188666170",
+        "username": "tarantelma",
+        "acct": "tarantelma@masto.pt",
+        "display_name": "Telma Tavares",
+        "locked": false,
+        "bot": false,
+        "discoverable": true,
+        "group": false,
+        "created_at": "2022-11-02T00:00:00.000Z",
+        "note": "<p>Designer 24/7.<br>\"Génia das t-shirts\" <a href=\"https://masto.pt/tags/pordosol\" class=\"mention hashtag\" rel=\"nofollow noopener noreferrer\" target=\"_blank\">#<span>pordosol</span></a><br>Avatar do Ben Wiseman, banner do Six Feet Under. <br>She/Her.</p>",
+        "url": "https://masto.pt/@tarantelma",
+        "avatar": "https://files.mastodon.social/cache/accounts/avatars/109/274/668/188/666/170/original/8948b8580b8ba695.gif",
+        "avatar_static": "https://files.mastodon.social/cache/accounts/avatars/109/274/668/188/666/170/static/8948b8580b8ba695.png",
+        "header": "https://files.mastodon.social/cache/accounts/headers/109/274/668/188/666/170/original/ac1f43f6a4526a77.jpeg",
+        "header_static": "https://files.mastodon.social/cache/accounts/headers/109/274/668/188/666/170/original/ac1f43f6a4526a77.jpeg",
+        "followers_count": 417,
+        "following_count": 387,
+        "statuses_count": 222,
+        "last_status_at": "2022-11-09",
+        "emojis": [],
+        "fields": [
+            {
+                "name": "Site",
+                "value": "eatyourcake.pt",
+                "verified_at": null
+            },
+            {
+                "name": "Loja",
+                "value": "foreversandevers.pt",
+                "verified_at": null
+            }
+        ]
+    },
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "reblog": null,
+    "content": "<p>Qual o hashtag para o gang dos filmes? Tivemos várias sugestões, votem na que preferem:</p>",
+    "plain_content": null,
+    "created_at": "2022-11-09T19:35:32.000Z",
+    "emojis": [],
+    "replies_count": 1,
+    "reblogs_count": 3,
+    "favourites_count": 0,
+    "reblogged": false,
+    "favourited": false,
+    "muted": false,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "media_attachments": [],
+    "mentions": [],
+    "tags": [],
+    "card": null,
+    "poll": {
+        "id": "287977",
+        "expires_at": "2022-11-10T19:35:32.000Z",
+        "expired": false,
+        "multiple": false,
+        "votes_count": 34,
+        "voters_count": 34,
+        "voted": false,
+        "own_votes": [],
+        "options": [
+            {
+                "title": "#ParaisoFilmes",
+                "votes_count": 14
+            },
+            {
+                "title": "#mastolumiere",
+                "votes_count": 10
+            },
+            {
+                "title": "#TheMastoPictureShow",
+                "votes_count": 6
+            },
+            {
+                "title": "#lumiere",
+                "votes_count": 4
+            }
+        ],
+        "emojis": []
+    },
+    "application": null,
+    "language": "pt",
+    "emoji_reactions": [],
+    "bookmarked": false,
+    "quote": false
+}
