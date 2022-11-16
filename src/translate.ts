@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 
-export function translate(content:string, sourceLang:string, targetLang:string = 'en') {
+export function translate(content:string, sourceLang:string, targetLang:string = 'en'):Promise<string> {
     return new Promise((resolve, reject) => {
         const proc = spawn(
             `argos-translate`,

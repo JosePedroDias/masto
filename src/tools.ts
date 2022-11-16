@@ -145,8 +145,15 @@ export function isTextInPt(s:string) {
   return count > 0;
 }
 
-export function sleep(ms:number) {
+export function sleep <A>(ms:number, value:A):Promise<A> {
   return new Promise((resolve) => {
-    setTimeout(resolve, ms);
+    setTimeout(() => resolve(value), ms);
   });
+}
+
+export function orTimeout <A>(prom:Promise<A>, timeoutMs:number, fallbackValue:A):Promise<A> {
+  return Promise.race([
+    prom,
+    sleep(timeoutMs, fallbackValue)
+  ]);
 }

@@ -13,7 +13,9 @@
 - also displays colored toots and reads them in terminal
 - displays poll options
 - displays content warnings (opened)
-- ad hoc language detection of portuguese, falling back to english \*\*
+- ad hoc language detection of portuguese \*\*
+- decorates URLs using opengraph whenever sites support it
+- translates posts using argos translate (disable by setting the `ORIGINAL_LANG` in `templates.ts` to empty array)
 
 \* - super useful. if you follow the link you'll be able to act on the user or toot directly without logging in
 \*\* - many people fill the language field incorrectly (can be reset by editing tootLang in templates.ts)  
@@ -68,6 +70,8 @@ npm install
 npm run build
 ```
 
+To have argos translate posts follow [argos-translate.md](./argos-translate.md)
+
 
 ## To run the local web server
 
@@ -90,9 +94,7 @@ press enter to get another page, text and enter to leave
 ## TODO
 
 - allow filtering out replies
-- add tests to check templates with CW and poll
-- wrap URLs with their metadata? - https://github.com/jshemas/openGraphScraper
-- translate content - https://libretranslate.com/ https://github.com/argosopentech/argos-translate/
+- add template tests for several types of posts
 
 
 ## REFERENCE
@@ -104,6 +106,9 @@ press enter to get another page, text and enter to leave
 - https://nodejs.org/docs/latest-v18.x/api/test.html#test_running_tests_from_the_command_line
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
 - https://github.com/chalk/chalk
+- https://github.com/jshemas/openGraphScraper
+- https://github.com/argosopentech/argos-translate/
+
 
 ## CREDITS
 

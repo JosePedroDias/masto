@@ -1,6 +1,9 @@
-import { i18n } from './i18n';
-import { deltaT, humanDate, isTextInPt, removeEmojis, withoutHtml, rewriteUrlFromOurInstance } from './tools';
 import { Chalk } from 'chalk';
+
+import { i18n } from './i18n';
+import { deltaT, humanDate, isTextInPt, removeEmojis, withoutHtml, rewriteUrlFromOurInstance, orTimeout } from './tools';
+import { translate } from './translate';
+
 
 const chalk = new Chalk({
     //level: 0 // uncomment to remove terminal colors
@@ -65,6 +68,33 @@ export async function tootLang(status: Entity.Status):Promise<string> {
     return wasDetectedPt ? 'pt' : taggedLanguage;
 }
 
+const ORIGINAL_LANG = ['fr', 'de', 'es'];
+const TARGET_LANG = 'en';
+export async function translateContent(content:string, lang:string):Promise<string> {
+    if (ORIGINAL_LANG.includes(lang)) {
+        try {
+            console.warn(`About to translate\n${content}\n from ${lang} to ${TARGET_LANG}!`);
+
+            //const translatedContent = await translate(content, lang, TARGET_LANG);
+            const translatedContent = await orTimeout(
+                translate(content, lang, TARGET_LANG), 3000, ''
+            );
+
+            if (translatedContent) {
+                console.log(`Translated\n${content}\n from ${lang} to ${TARGET_LANG}:\n${translatedContent}`);
+                return translatedContent;
+            }
+            else {
+                console.log('timed out');
+                return content;
+            }
+        } catch (_) {
+            console.warn(`Error translating\n${content}\n from ${lang} to ${TARGET_LANG}!`);
+        }
+    }
+    return content;
+}
+
 export async function tootTerm(status: Entity.Status):Promise<string> {
     const core = status.reblog || status;
     const acc = core.account;
@@ -86,7 +116,7 @@ export async function tootTerm(status: Entity.Status):Promise<string> {
 
     const cw = core.sensitive ? (core.spoiler_text || i('content warning')) : '';
 
-    const content2 = (await withoutHtml(content)).trim();
+    const content2 = await translateContent( (await withoutHtml(content)).trim(), lang);
 
     return `${chalk.rgb(0, 0, 255).bold(`\n==============\n`)}
 ${chalk.underline(rewriteUrlFromOurInstance(core.url, `/${core.id}`))}${status.reblog ? `\n${i('boost')} ${i('by')} ${accountTerm(status.account)} ${i('at')} ${humanDate(status.created_at)} (${deltaT(status.created_at, lang)})` : ''}
@@ -121,7 +151,7 @@ export async function tootHTML(status: Entity.Status) {
         poll = tmp.join('');
     }
 
-    const content2 = (await withoutHtml(content, 'media')).trim();
+    const content2 = await translateContent( (await withoutHtml(content, 'media')).trim(), lang);
 
     return `<div class="toot visibility-${core.visibility} reply-${toYN(!!core.in_reply_to_account_id)} poll-${toYN(!!core.poll)} cw-${toYN(!!cw)}">
 <div class="header">
@@ -158,7 +188,7 @@ export async function tootReader(status: Entity.Status) {
     }
     const mediaS = medias.join('\n');
 
-    const content2 = (await withoutHtml(content, true)).trim();
+    const content2 = await translateContent( (await withoutHtml(content, true)).trim(), lang);
 
     return `${accountReader(acc)} ${i('said')} ${deltaT(core.created_at, lang)} ${i('ago')}:
 ${cw ? `${cw}\n` : ''}${content2}${poll ? `\n${poll}` : ''}${mediaS ? '\n' + mediaS :''}`;
