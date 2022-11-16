@@ -1,0 +1,134 @@
+{
+    "id": "109354354034086537",
+    "uri": "https://mastodon.social/users/rcarmo/statuses/109354354034086537",
+    "url": "https://mastodon.social/@rcarmo/109354354034086537",
+    "account": {
+        "id": "457621",
+        "username": "rcarmo",
+        "acct": "rcarmo",
+        "display_name": "Rui Carmo",
+        "locked": false,
+        "bot": false,
+        "discoverable": true,
+        "group": false,
+        "created_at": "2018-08-17T00:00:00.000Z",
+        "note": "<p>I fix things other people designed broken. <span class=\"h-card\"><a href=\"https://mastodon.social/@microsoft\" class=\"u-url mention\">@<span>microsoft</span></a></span> <span class=\"h-card\"><a href=\"https://mastodon.social/@Azure\" class=\"u-url mention\">@<span>Azure</span></a></span> for Operators. Previously <span class=\"h-card\"><a href=\"https://mastodon.social/@Sapo\" class=\"u-url mention\">@<span>Sapo</span></a></span>, <span class=\"h-card\"><a href=\"https://mastodon.social/@vodafone\" class=\"u-url mention\">@<span>vodafone</span></a></span>, <span class=\"h-card\"><a href=\"https://mastodon.social/@Accenture\" class=\"u-url mention\">@<span>Accenture</span></a></span>.</p><p>Opinions mine, at Tao of Mac for 20+ years. </p><p>Doing <a href=\"https://mastodon.social/tags/5g\" class=\"mention hashtag\" rel=\"tag\">#<span>5g</span></a> <a href=\"https://mastodon.social/tags/linux\" class=\"mention hashtag\" rel=\"tag\">#<span>linux</span></a> <a href=\"https://mastodon.social/tags/telco\" class=\"mention hashtag\" rel=\"tag\">#<span>telco</span></a>, as a UNIX/Mac guy trapped in a Windows world.</p>",
+        "url": "https://mastodon.social/@rcarmo",
+        "avatar": "https://files.mastodon.social/accounts/avatars/000/457/621/original/7e893ddd7183956b.jpeg",
+        "avatar_static": "https://files.mastodon.social/accounts/avatars/000/457/621/original/7e893ddd7183956b.jpeg",
+        "header": "https://files.mastodon.social/accounts/headers/000/457/621/original/ee7d0d6b7bbb0070.jpeg",
+        "header_static": "https://files.mastodon.social/accounts/headers/000/457/621/original/ee7d0d6b7bbb0070.jpeg",
+        "followers_count": 208,
+        "following_count": 161,
+        "statuses_count": 243,
+        "last_status_at": "2022-11-16",
+        "noindex": false,
+        "emojis": [],
+        "fields": [
+            {
+                "name": "Profile",
+                "value": "<a href=\"https://carmo.io\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"><span class=\"invisible\">https://</span><span class=\"\">carmo.io</span><span class=\"invisible\"></span></a>",
+                "verified_at": "2022-04-26T09:28:08.132+00:00"
+            },
+            {
+                "name": "Blog",
+                "value": "<a href=\"https://taoofmac.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"><span class=\"invisible\">https://</span><span class=\"\">taoofmac.com</span><span class=\"invisible\"></span></a>",
+                "verified_at": null
+            },
+            {
+                "name": "Twitter",
+                "value": "<a href=\"https://twitter.com/rcarmo\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"><span class=\"invisible\">https://</span><span class=\"\">twitter.com/rcarmo</span><span class=\"invisible\"></span></a>",
+                "verified_at": null
+            },
+            {
+                "name": "GitHub",
+                "value": "<a href=\"https://github.com/rcarmo\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"><span class=\"invisible\">https://</span><span class=\"\">github.com/rcarmo</span><span class=\"invisible\"></span></a>",
+                "verified_at": null
+            }
+        ]
+    },
+    "in_reply_to_id": null,
+    "in_reply_to_account_id": null,
+    "reblog": null,
+    "content": "<p><a href=\"https://mastodon.social/tags/Twitter\" class=\"mention hashtag\" rel=\"tag\">#<span>Twitter</span></a> without half the <a href=\"https://mastodon.social/tags/Engineering\" class=\"mention hashtag\" rel=\"tag\">#<span>Engineering</span></a> staff, going <a href=\"https://mastodon.social/tags/hardcore\" class=\"mention hashtag\" rel=\"tag\">#<span>hardcore</span></a>. <br />---<br />RT @JamesL1927<br />It’s old but still gold.</p><p>The ‘isolated vocals’ of DAVID BOWIE and MICK JAGGER on DANCING IN THE STREET.</p><p>Apparently Bowie thought this was hilarious. <br /><a href=\"https://twitter.com/JamesL1927/status/1592582274083880960\" target=\"_blank\" rel=\"nofollow noopener noreferrer\"><span class=\"invisible\">https://</span><span class=\"ellipsis\">twitter.com/JamesL1927/status/</span><span class=\"invisible\">1592582274083880960</span></a></p>",
+    "plain_content": null,
+    "created_at": "2022-11-16T16:10:21.284Z",
+    "emojis": [],
+    "replies_count": 0,
+    "reblogs_count": 0,
+    "favourites_count": 2,
+    "reblogged": false,
+    "favourited": false,
+    "muted": false,
+    "sensitive": false,
+    "spoiler_text": "",
+    "visibility": "public",
+    "media_attachments": [
+        {
+            "id": "109354353931960762",
+            "type": "video",
+            "url": "https://files.mastodon.social/media_attachments/files/109/354/353/931/960/762/original/d1054def2bd4e3ec.mp4",
+            "preview_url": "https://files.mastodon.social/media_attachments/files/109/354/353/931/960/762/small/d1054def2bd4e3ec.png",
+            "remote_url": null,
+            "preview_remote_url": null,
+            "text_url": null,
+            "meta": {
+                "original": {
+                    "width": 480,
+                    "height": 360,
+                    "frame_rate": "25/1",
+                    "duration": 119.24,
+                    "bitrate": 317217
+                },
+                "small": {
+                    "width": 400,
+                    "height": 300,
+                    "size": "400x300",
+                    "aspect": 1.3333333333333333
+                }
+            },
+            "description": null,
+            "blurhash": "U5Bgn}c?D4vi^T,JpIp^kqx]ogxuY4S~jFZ%"
+        }
+    ],
+    "mentions": [],
+    "tags": [
+        {
+            "name": "twitter",
+            "url": "https://mastodon.social/tags/twitter"
+        },
+        {
+            "name": "engineering",
+            "url": "https://mastodon.social/tags/engineering"
+        },
+        {
+            "name": "hardcore",
+            "url": "https://mastodon.social/tags/hardcore"
+        }
+    ],
+    "card": {
+        "url": "https://twitter.com/jamesl1927/status/1592582274083880960",
+        "title": "James Leighton on Twitter",
+        "description": "“It’s old but still gold.\n\nThe ‘isolated vocals’ of DAVID BOWIE and MICK JAGGER on DANCING IN THE STREET.\n\nApparently Bowie thought this was hilarious.”",
+        "type": "link",
+        "author_name": "",
+        "author_url": "",
+        "provider_name": "Twitter",
+        "provider_url": "",
+        "html": "",
+        "width": 400,
+        "height": 300,
+        "image": "https://files.mastodon.social/cache/preview_cards/images/047/716/068/original/e873ff7cc9bb3f08.jpeg",
+        "embed_url": "",
+        "blurhash": "U4BNr{P:HY[v~X-AS~Y6zf$npc*HY#Tan5ML"
+    },
+    "poll": null,
+    "application": {
+        "name": "Moa",
+        "website": "https://moa.party/"
+    },
+    "language": "en",
+    "emoji_reactions": [],
+    "bookmarked": false,
+    "quote": false
+}
