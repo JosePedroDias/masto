@@ -55,6 +55,7 @@ const TESTED_OG_TYPES = [
   'article',
   'book',
   'music.song',
+  'photo',
   'video.other',
   'website',
 ];
@@ -72,22 +73,17 @@ export async function mediaURLs(s:string) {
     const md:any = await urlMetadata(url);
     let meta = url;
     if (typeof md === 'object') {
-      if (md.ogSiteName === 'Twitter') {
-        meta = `<b>${md.ogTitle}</b> - <i>${md.ogDescription}</i>`;
-      }
-      else if (TESTED_OG_TYPES.includes(md.ogType)) {
-        meta = `${md.ogTitle}<br/><img src="${md.ogImage.url}">`;
-      }
-      else if (md.ogTitle) {
+      if (!TESTED_OG_TYPES.includes(md.ogType)) {
         console.log(`using mediaURL with ogType:${md.ogType} in ogSiteName:${md.ogSiteName} from url:${url}`);
-        if (md.ogImage) {
-          meta = `${md.ogTitle}<br/><img src="${md.ogImage.url}">`;
-        } else {
-          meta = md.ogTitle;
-        }
       }
+
+      meta = '';
+      if (md.ogTitle) meta += `<b>${md.ogTitle}</b>`;
+      if (md.ogDescription) meta += `${meta? '<br/>' : ''}${md.ogDescription}`;
+      if (md.ogImage && md.ogImage.url) meta += `<br/><img src="${md.ogImage.url}">`;
+
+      s2 = s2.replace(url, `<a class="meta" href="${url}" target="_blank">${meta || url}</a>`);
     }
-    s2 = s2.replace(url, `<a class="meta" href="${url}" target="_blank">${meta}</a>`);
   }
 
   return s2;
@@ -142,7 +138,7 @@ export function isTextInPt(s:string) {
   let count = foundWords.length;
   //console.log(foundWords);
   //console.log(count);
-  return count > 0;
+  return count > 1;
 }
 
 export function sleep <A>(ms:number, value:A):Promise<A> {

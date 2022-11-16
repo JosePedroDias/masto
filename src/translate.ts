@@ -1,15 +1,22 @@
 import { spawn } from 'node:child_process';
 
+// todo support aborting
 export function translate(content:string, sourceLang:string, targetLang:string = 'en'):Promise<string> {
     return new Promise((resolve, reject) => {
+        content = content
+        .replace(/"/g, '')
+        .replace(/\n/g, ' ');
+        //console.log(`ABOUT TO TRANSLATE:\n${content}\nxxx`);
         const proc = spawn(
             `argos-translate`,
-            [`--from-lang`, sourceLang, `--to-lang`, targetLang, `${content}`],
+            [`--from-lang`, sourceLang, `--to-lang`, targetLang, `"${content}"`],
             { cwd: process.cwd() }
         );
 
         proc.stdout.on('data', (data) => {
-            resolve(data.toString().trim());
+            let txt = data.toString().trim();
+            txt = txt.substring(1, txt.length - 1);
+            resolve(txt);
             proc.kill();
         });
 
@@ -17,10 +24,6 @@ export function translate(content:string, sourceLang:string, targetLang:string =
             reject(data.toString());
             proc.kill();
         });
-
-        /* proc.on('exit', (code) => {
-            console.log(`Child process exited with exit code ${code}`);
-        }); */
     });
 }
 
