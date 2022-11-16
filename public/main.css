@@ -94,16 +94,29 @@ a {
 .toot .content .meta {
     font-size: 16px;
     line-height: 16px;
-    display: inline-block;
     padding: 5px;
     background-color: lightblue;
     border-radius: 4px;
     text-decoration: none;
+    min-width: 20vw;
+    max-width: 90vw;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+.toot .content .meta.with-image {
+    padding-left: 106px;
+    min-height: 96px;
 }
 
 .toot .content .meta img {
-    max-width: 25vw;
-    max-height: 25vh;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
 }
 
 .toot .mentions,
@@ -137,8 +150,8 @@ a {
     max-height: 50px;
 }
 
-.media-image,
-.media-video {
+.toot .media img,
+.toot .media video {
     max-width: 50vw;
     max-height: 50vh;
 }

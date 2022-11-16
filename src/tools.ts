@@ -78,11 +78,16 @@ export async function mediaURLs(s:string) {
       }
 
       meta = '';
-      if (md.ogTitle) meta += `<b>${md.ogTitle}</b>`;
-      if (md.ogDescription) meta += `${meta? '<br/>' : ''}${md.ogDescription}`;
-      if (md.ogImage && md.ogImage.url) meta += `<br/><img src="${md.ogImage.url}">`;
+      
 
-      s2 = s2.replace(url, `<a class="meta" href="${url}" target="_blank">${meta || url}</a>`);
+      if (md.ogTitle && md.ogSiteName) meta += `<b>${md.ogSiteName} - ${md.ogTitle}</b>`;
+      else if (md.ogTitle) meta += `<b>${md.ogTitle}</b>`;
+
+      if (md.ogDescription) meta += `${meta? '<br/>' : ''}${md.ogDescription}`;
+
+      if (md.ogImage && md.ogImage.url) meta = `<img src="${md.ogImage.url}"><div>${meta}</div>`;
+
+      s2 = s2.replace(url, `<a class="meta${md.ogImage && md.ogImage.url ? ' with-image' : ''}" href="${url}" target="_blank">${meta || url}</a>`);
     }
   }
 
